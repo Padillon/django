@@ -42,4 +42,15 @@ class marcaForm(forms.ModelForm):
             'descripcion',
         ]
 
-        
+        labels = {
+            'nombre':'Nombre',
+            'descripcion':'Descripcion',
+
+        }
+
+        widgets = {
+            'nombre': forms.TextInput(attrs={'class':'form-control',
+                                             'placeholder':"Nombre de la marca"}),
+            'descripcion': forms.TextInput(attrs={'class':'form-control',
+                                                  'placeholder':"Descripcion de la marca"}),
+        }

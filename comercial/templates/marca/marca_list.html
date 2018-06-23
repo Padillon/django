@@ -19,9 +19,10 @@
 
       </div>
       <div class="col-md-offset-11">
-          <!-- Button trigger modal -->
-          <a class="btn btn-primary"><i class="fa fa-plus"></i> Nuevo</a>
+          <a class="btn btn-primary" onclick="return abrir_modal('{% url 'comercial:crear_marcas' %}')">
+            <i class="fa fa-plus"></i> Nuevo</a>
       </div>
+
 
    <div class="row">
            <div class="col-md-12">
@@ -51,9 +52,9 @@
                   			<td>{{ Marca.nombre }}</td>
                   			<td>{{ Marca.descripcion }}</td>
                   			<td>
-                  				<a class="btn btn-success btn-trans" href="#">Ver</a>
-                  				<a class="btn btn-warning btn-trans" href="#">Editar</a>
-                  				<a class="btn btn-danger btn-trans" href="#">Eliminar</a>
+                  				<a class="btn btn-success btn-trans" onclick="return abrir_modal('{% url 'comercial:detalle_marcas' Marca.pk %}')">Ver</a>
+                  				<a class="btn btn-warning btn-trans" onclick="return abrir_modal('{% url 'comercial:modificar_marcas' Marca.pk %}')">Editar</a>
+                  				<a class="btn btn-danger btn-trans" onclick="return abrir_modal('{% url 'comercial:eliminar_marcas' Marca.pk %}')">Eliminar</a>
                   			</td>
                   		</tr>
                   		{% endfor %}
@@ -63,6 +64,8 @@
                   		{% endif %}
                   	</tbody>
                   </table>
+                  <div id="popup" class="modal fade" role="dialog">
+                 </div>
                 </div>
               </div>
             </div>
