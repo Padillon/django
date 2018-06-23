@@ -1,6 +1,6 @@
 from django.urls import include, path
 from apps.inventario.views import index,productos,categoria,proveedor,cliente, \
-    marca_list,CrearMarca,ModificarMarca,DetalleMarca
+    marca_list,CrearMarca,ModificarMarca,DetalleMarca,EliminarMarca
 from apps.venta.views import ListadoClientes, CrearCliente, ModificarCliente, DetalleCliente
 
 app_name = 'comercial'
@@ -15,6 +15,7 @@ urlpatterns = [
     path('crear_marca/',CrearMarca.as_view(), name = 'crear_marcas'),
     path('modificar_marca/(?P<pk>.+)/',ModificarMarca.as_view(), name = 'modificar_marcas'),
     path('detalle_marca/(?P<pk>.+)/',DetalleMarca.as_view(), name = 'detalle_marcas'),
+    path('eliminar_marca/(?P<pk>.+)/',EliminarMarca.as_view(), name = 'eliminar_marcas'),
     #Clientes
     path('clientes/', ListadoClientes.as_view(), name="listado_clientes"),
     path('crear_cliente/$', CrearCliente.as_view(), name="crear_cliente"),

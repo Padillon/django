@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.urls import reverse_lazy
-from django.views.generic import CreateView,UpdateView,ListView,DetailView
+from django.views.generic import CreateView,UpdateView,ListView,DetailView,DeleteView
 from apps.inventario.forms import marcaForm
 from apps.inventario.models import marca
 
@@ -41,3 +41,8 @@ class ModificarMarca(UpdateView):
 class DetalleMarca(DetailView):
     model = marca
     template_name = 'marca/detalle_marca.html'
+
+class EliminarMarca(DeleteView):
+    model = marca
+    template_name = 'marca/eliminar_marca.html'
+    success_url = reverse_lazy('comercial:marca')

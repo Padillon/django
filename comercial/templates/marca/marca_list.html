@@ -54,7 +54,7 @@
                   			<td>
                   				<a class="btn btn-success btn-trans" onclick="return abrir_modal('{% url 'comercial:detalle_marcas' Marca.pk %}')">Ver</a>
                   				<a class="btn btn-warning btn-trans" onclick="return abrir_modal('{% url 'comercial:modificar_marcas' Marca.pk %}')">Editar</a>
-                  				<a class="btn btn-danger btn-trans" href="#">Eliminar</a>
+                  				<a class="btn btn-danger btn-trans" onclick="return abrir_modal('{% url 'comercial:eliminar_marcas' Marca.pk %}')">Eliminar</a>
                   			</td>
                   		</tr>
                   		{% endfor %}
