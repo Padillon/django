@@ -24,6 +24,6 @@ class ModificarCliente(UpdateView):
 
 class DetalleCliente(DetailView):
     model = Cliente
-    template_name = 'detalle_cliente.html'
+    template_name = 'cliente/detalle_cliente.html'
 
 # Create your views here.

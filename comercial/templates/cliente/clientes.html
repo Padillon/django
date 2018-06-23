@@ -46,22 +46,28 @@
                    			<td>Dirección</td>
                         <td>Registro</td>
                         <td>Teléfono</td>
+                        <td>Acciones</td>
                    		</tr>
                    	</thead>
                     <tbody>
-                  		{% if object_list %}
-                  		{% for cliente in object_list %}
+                      {% if object_list %}
+                      {% for Cliente in object_list %}
                   		<tr>
                   			<td>{{ Cliente.id }}</td>
+                        <td>{{ Cliente.nombre }}</td>
                   			<td>{{ Cliente.apellido }}</td>
                   			<td>{{ Cliente.direccion }}</td>
                         <td>{{ Cliente.registro }}</td>
                         <td>{{ Cliente.telefono }}</td>
-                  			<td>
-                  				<a class="btn btn-success btn-trans" href="#">Ver</a>
-                  				<a class="btn btn-warning btn-trans" href="#">Editar</a>
-                  				<a class="btn btn-danger btn-trans" href="#">Eliminar</a>
-                  			</td>
+                        <td class="text-center">
+                       <a onclick="return abrir_modal('{% url 'comercial:detalle_cliente' Cliente.pk %}')" class="btn btn-success btn-trans" >
+                           <span class="glyphicon glyphicon-eye-open"></span>
+                       </a>
+                       <a onclick="return abrir_modal('{% url 'comercial:modificar_cliente' Cliente.pk %}')" class="btn btn-warning btn-trans">
+                           <span class="glyphicon glyphicon-edit"></span>
+                       </a>
+
+                   </td>
                   		</tr>
                   		{% endfor %}
 
