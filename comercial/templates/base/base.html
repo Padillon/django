@@ -97,7 +97,7 @@
             </ul>
             <a href="javascript:void(0);"><i class="fa fa-file"></i><span>Venta</span><i class="arrow fa fa-angle-right pull-right"></i></a>
             <ul>
-              <li><a href="{% url 'comercial:clientes' %}">Proveedores</a></li>
+              <li><a href="{% url 'comercial:listado_clientes' %}">Cliente</a></li>
             </ul>
         </li>
     </ul>
@@ -175,6 +175,32 @@
               return false;
       }
         </script>
+        <script>
+        function abrir_modal(url)
+{
+        $('#popup').load(url, function()
+        {
+                $(this).modal('show');
+        });
+        return false;
+}
+
+function cerrar_modal()
+{
+        $('#popup').modal('hide');
+        return false;
+}
+
+$(document).ready(function()
+{
+    var table = $('#tabla').dataTable( {
+        "language": {
+                url: "/static/localizacion/es_ES.json"
+        }
+    } );
+});
+
+      </script>
 
     	{% endblock %}
       {% endblock %}
