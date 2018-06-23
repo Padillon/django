@@ -8,7 +8,7 @@ from apps.inventario.models import marca
 # Create your views here.
 
 def index(request):
-    return render(request, 'dashboard/dashbsoard.html')
+    return render(request, 'dashboard/dashboard.html')
 
 def productos(request):
     return render(request, 'productos/productos_list.html')
@@ -18,6 +18,10 @@ def categoria(request):
 
 def proveedor(request):
     return render(request, 'proveedor/proveedor_list.html')
+
+def cliente(request):
+    return render(request, 'cliente/cliente.html')
+
 
 class marca_list(ListView):
     model = marca

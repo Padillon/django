@@ -1,0 +1,89 @@
+{% extends 'base/base.html' %}
+{% csrf_token %}
+{% block content %}
+<section class="main-content-wrapper">
+   <section id="main-content">
+       <div class="row">
+           <div class="col-md-12">
+               <!--breadcrumbs start -->
+               <ul class="breadcrumb">
+                   <li><a href="#">Venta</a>
+                   </li>
+                   <li>Cliente</li>
+                   <li class="active">Lista</li>
+               </ul>
+               <!--breadcrumbs end -->
+              <h1 class="h1">Lista</h1>
+           </div>
+
+
+      </div>
+      <div class="row">
+        <div class="col-md-offset-11">
+                <a onclick="return abrir_modal('{% url 'comercial:crear_cliente' %}')" class="btn btn-primary">
+                      <i class="fa fa-plus"></i>Cliente
+                </a>
+        </div>
+      </div>
+
+   <div class="row">
+           <div class="col-md-12">
+               <div class="panel panel-default">
+                 <div class="panel-heading">
+                   <h3 class="panel-title">Detalle</h3>
+                   <div class="actions pull-right">
+                       <i class="fa fa-chevron-down"></i>
+                       <i class="fa fa-times"></i>
+                   </div>
+                 </div>
+                 <div class="panel-body">
+                   <table id="table" class="table table-striped hover" cellspacing="0" width="100%">
+                     <thead>
+                   		<tr>
+                   			<td>#</td>
+                   			<td>Nombre</td>
+                   			<td>Apellido</td>
+                   			<td>Dirección</td>
+                        <td>Registro</td>
+                        <td>Teléfono</td>
+                        <td>Acciones</td>
+                   		</tr>
+                   	</thead>
+                    <tbody>
+                      {% if object_list %}
+                      {% for Cliente in object_list %}
+                  		<tr>
+                  			<td>{{ Cliente.id }}</td>
+                        <td>{{ Cliente.nombre }}</td>
+                  			<td>{{ Cliente.apellido }}</td>
+                  			<td>{{ Cliente.direccion }}</td>
+                        <td>{{ Cliente.registro }}</td>
+                        <td>{{ Cliente.telefono }}</td>
+                        <td class="text-center">
+                       <a onclick="return abrir_modal('{% url 'comercial:detalle_cliente' Cliente.pk %}')" class="btn btn-success btn-trans" >
+                           <span class="glyphicon glyphicon-eye-open"></span>
+                       </a>
+                       <a onclick="return abrir_modal('{% url 'comercial:modificar_cliente' Cliente.pk %}')" class="btn btn-warning btn-trans">
+                           <span class="glyphicon glyphicon-edit"></span>
+                       </a>
+
+                   </td>
+                  		</tr>
+                  		{% endfor %}
+
+                  		{% else %}
+                  		<h1>No hay registros de clientes</h1>
+                  		{% endif %}
+                  	</tbody>
+                  </table>
+                  <div id="popup" class="modal fade" role="dialog">
+
+            </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </section>
+
+{% endblock %}

@@ -18,9 +18,12 @@ from django.urls import include, path
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('dashboard/', include('apps.inventario.urls', namespace='dashboard')),
     path('comercial/', include('apps.inventario.urls', namespace='comercial')),
     path('productos/', include('apps.inventario.urls', namespace='productos')),
     path('marcas/', include('apps.inventario.urls', namespace='marcas')),
     path('categorias/', include('apps.inventario.urls', namespace='categorias')),
     path('proveedores/', include('apps.inventario.urls', namespace='proveedores')),
+    path('clientes/', include('apps.inventario.urls', namespace='cliente')),
+
 ]
