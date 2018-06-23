@@ -19,6 +19,10 @@ def categoria(request):
 def proveedor(request):
     return render(request, 'proveedor/proveedor_list.html')
 
+def cliente(request):
+    return render(request, 'cliente/cliente.html')
+
+
 class marca_list(ListView):
     model = marca
     template_name = 'marca/marca_list.html'
