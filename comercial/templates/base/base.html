@@ -20,6 +20,8 @@
     <link rel="stylesheet" href="{% static 'assets/css/animate.css' %}">
     <!-- Custom styles for this theme -->
     <link rel="stylesheet" href="{% static 'assets/css/main.css' %}">
+    <!-- DataTables-->
+   <link rel="stylesheet" href="{% static 'assets/plugins/dataTables/css/dataTables.css' %}">
     <!-- Fonts -->
     <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,900,300italic,400italic,600italic,700italic,900italic' rel='stylesheet' type='text/css'>
    <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
@@ -87,11 +89,15 @@
             <ul>
                 <li><a href="{% url 'comercial:productos' %}">Productos</a></li>
                 <li><a href="{% url 'comercial:categorias' %}">Categorias</a></li>
-                <li><a href="{% url 'comercial:marcas' %}">Marcas</a></li>
+                <li><a href="{% url 'comercial:marca' %}">Marcas</a></li>
                 <li><a href="{% url 'comercial:proveedor' %}">Proveedores</a></li>
                 <li><a href="pages-timeline.html">Timeline</a></li>
                 <li><a href="pages-404.html">404</a></li>
                 <li><a href="pages-500.html">500</a></li>
+            </ul>
+            <a href="javascript:void(0);"><i class="fa fa-file"></i><span>Venta</span><i class="arrow fa fa-angle-right pull-right"></i></a>
+            <ul>
+              <li><a href="{% url 'comercial:productos' %}">Clientes</a></li>
             </ul>
         </li>
     </ul>
@@ -125,6 +131,50 @@
         <script src="{% static 'assets/plugins/bootstrap/js/bootstrap.min.js' %}"></script>
         <script src="{% static 'assets/plugins/waypoints/waypoints.min.js' %}"></script>
         <script src="{% static 'assets/js/application.js'%} "></script>
+        <script src="{% static 'assets/plugins/dataTables/js/jquery.dataTables.js' %}"></script>
+        <script src="{% static 'assets/plugins/dataTables/js/dataTables.bootstrap.js'%}"></script>
+        <script>
+        var table = $('#example').DataTable({
+        columnDefs: [
+        {"className": "dt-center", "targets": "_all"}
+        ],
+        language: {
+            "decimal": "",
+            "emptyTable": "No hay información",
+            "info": "Mostrando _START_ a _END_ de _TOTAL_ Entradas",
+            "infoEmpty": "Mostrando 0 to 0 of 0 Entradas",
+            "infoFiltered": "(Filtrado de _MAX_ total entradas)",
+            "infoPostFix": "",
+            "thousands": ",",
+            "lengthMenu": "Mostrar _MENU_ Entradas",
+            "loadingRecords": "Cargando...",
+            "processing": "Procesando...",
+            "search": "Buscar: ",
+            "zeroRecords": "Sin resultados encontrados",
+            "paginate": {
+                "first": "Primero",
+                "last": "Ultimo",
+                "next": "Siguiente",
+                "previous": "Anterior"
+            }
+        },
+        });
+
+              function abrir_modal(url)
+      {
+              $('#popup').load(url, function()
+              {
+                      $(this).modal('show');
+              });
+              return false;
+      }
+
+      function cerrar_modal()
+      {
+              $('#popup').modal('hide');
+              return false;
+      }
+        </script>
 
     	{% endblock %}
       {% endblock %}
