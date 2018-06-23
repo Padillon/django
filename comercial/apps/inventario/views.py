@@ -1,5 +1,9 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpResponse
+from django.urls import reverse_lazy
+from django.views.generic import CreateView,UpdateView,ListView,DetailView
+from apps.inventario.forms import marcaForm
+from apps.inventario.models import marca
 
 # Create your views here.
 
@@ -15,5 +19,21 @@ def categoria(request):
 def proveedor(request):
     return render(request, 'proveedor/proveedor_list.html')
 
-def marca(request):
-    return render(request, 'marca/marca_list.html')
+class marca_list(ListView):
+    model = marca
+    template_name = 'marca/marca_list.html'
+
+class CrearMarca(CreateView):
+    template_name = 'marca/marca_list.html'
+    form_class = marcaForm
+    success_url = reverse_lazy('comercial:marca')
+
+class ModificarMarca(UpdateView):
+    model = marca
+    template_name = 'marca/marca_list.html'
+    form_class = marcaForm
+    success_url = reverse_lazy('comercial:marca')
+
+class DetalleMarca(DetailView):
+    model = marca
+    template_name = 'marca/marca_list.html'

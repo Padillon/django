@@ -13,10 +13,61 @@
                    <li class="active">Lista</li>
                </ul>
                <!--breadcrumbs end -->
-              <h1 class="h1">Hola prro x3</h1>
+              <h1 class="h1">Marcas</h1>
            </div>
-       </div>
 
-   </section>
-</section>
+
+      </div>
+      <div class="col-md-offset-11">
+          <!-- Button trigger modal -->
+          <a class="btn btn-primary"><i class="fa fa-plus"></i> Nuevo</a>
+      </div>
+
+   <div class="row">
+           <div class="col-md-12">
+               <div class="panel panel-default">
+                 <div class="panel-heading">
+                   <h3 class="panel-title">Detalles</h3>
+                   <div class="actions pull-right">
+                       <i class="fa fa-chevron-down"></i>
+                       <i class="fa fa-times"></i>
+                   </div>
+                 </div>
+                 <div class="panel-body">
+                   <table id="example" class="table table-striped hover" cellspacing="0" width="100%">
+                     <thead>
+                   		<tr>
+                   			<td>#</td>
+                   			<td>Nombre</td>
+                   			<td>Descripcion</td>
+                   			<td>Accion</td>
+                   		</tr>
+                   	</thead>
+                    <tbody>
+                  		{% if object_list %}
+                  		{% for Marca in object_list %}
+                  		<tr>
+                  			<td>{{ Marca.id }}</td>
+                  			<td>{{ Marca.nombre }}</td>
+                  			<td>{{ Marca.descripcion }}</td>
+                  			<td>
+                  				<a class="btn btn-success btn-trans" href="#">Ver</a>
+                  				<a class="btn btn-warning btn-trans" href="#">Editar</a>
+                  				<a class="btn btn-danger btn-trans" href="#">Eliminar</a>
+                  			</td>
+                  		</tr>
+                  		{% endfor %}
+
+                  		{% else %}
+                  		<h1>No hay registros de jugadores</h1>
+                  		{% endif %}
+                  	</tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </section>
+
 {% endblock %}
