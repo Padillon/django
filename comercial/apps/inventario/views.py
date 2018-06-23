@@ -8,7 +8,7 @@ from apps.inventario.models import marca
 # Create your views here.
 
 def index(request):
-    return render(request, 'dashboard/dashbssoard.html')
+    return render(request, 'dashboard/dashbsoard.html')
 
 def productos(request):
     return render(request, 'productos/productos_list.html')
