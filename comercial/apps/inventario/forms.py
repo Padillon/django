@@ -42,4 +42,13 @@ class marcaForm(forms.ModelForm):
             'descripcion',
         ]
 
-        
+        labels = {
+            'nombre':'Nombre',
+            'descripcion':'Descripcion',
+
+        }
+
+        widgets = {
+            'nombre': forms.TextInput(attrs={'class':'form-control'}),
+            'descripcion': forms.TextInput(attrs={'class':'form-control'}),
+        }

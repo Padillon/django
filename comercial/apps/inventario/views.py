@@ -28,16 +28,16 @@ class marca_list(ListView):
     template_name = 'marca/marca_list.html'
 
 class CrearMarca(CreateView):
-    template_name = 'marca/marca_list.html'
+    template_name = 'marca/marcas.html'
     form_class = marcaForm
     success_url = reverse_lazy('comercial:marca')
 
 class ModificarMarca(UpdateView):
     model = marca
-    template_name = 'marca/marca_list.html'
+    template_name = 'marca/marcas.html'
     form_class = marcaForm
     success_url = reverse_lazy('comercial:marca')
 
 class DetalleMarca(DetailView):
     model = marca
-    template_name = 'marca/marca_list.html'
+    template_name = 'marca/detalle_marca.html'
