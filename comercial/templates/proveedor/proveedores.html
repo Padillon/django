@@ -2,12 +2,16 @@
         <div class="modal-content">
                 {% if object %}
                 <form role="form" action="{% url 'comercial:modificar_proveedor' object.pk %}" method="post">
+                  <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal">x</button>
+                  <h3>Editar proveedor.</h3>
                 {% else %}
                 <form role="form" action="{% url 'comercial:crear_proveedores' %}" method="post">
+                  <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal">x</button>
+                  <h3>Agregar proveedor.</h3>
                 {% endif %}
-                <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal">x</button>
-                <h3>Agregar proveedor.</h3>
+
             </div>
             <div class="modal-body">
                                 {% csrf_token %}
