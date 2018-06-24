@@ -19,7 +19,7 @@
 
       </div>
       <div class="col-md-offset-11">
-          <a class="btn btn-primary" onclick="return abrir_modal('{% url 'comercial:crear_marcas' %}')">
+          <a class="btn btn-primary" onclick="return abrir_modal('{% url 'comercial:crear_marcas'  %}')">
             <i class="fa fa-plus"></i> Nuevo</a>
       </div>
 
@@ -58,7 +58,6 @@
                   			</td>
                   		</tr>
                   		{% endfor %}
-
                   		{% else %}
                   		<h1>No hay registros de jugadores</h1>
                   		{% endif %}
