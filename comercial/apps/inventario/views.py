@@ -2,8 +2,8 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.urls import reverse_lazy
 from django.views.generic import CreateView,UpdateView,ListView,DetailView,DeleteView
-from apps.inventario.forms import marcaForm
-from apps.inventario.models import marca
+from apps.inventario.forms import marcaForm,proveedorForm
+from apps.inventario.models import marca,proveedor
 
 # Create your views here.
 
@@ -16,13 +16,32 @@ def productos(request):
 def categoria(request):
     return render(request, 'categoria/categoria_list.html')
 
-def proveedor(request):
-    return render(request, 'proveedor/proveedor_list.html')
+#Proveedor
+class proveedor(ListView):
+    model = proveedor
+    template_name = 'proveedor/proveedor_list.html'
 
-def cliente(request):
-    return render(request, 'cliente/cliente.html')
+class CrearProveedor(CreateView):
+    template_name = 'proveedor/proveedores.html'
+    form_class = proveedorForm
+    success_url = reverse_lazy('comercial:proveedor')
 
+class ModificarProveedor(UpdateView):
+    model = proveedor
+    template_name = 'proveedor/proveedores.html'
+    form_class = proveedorForm
+    success_url = reverse_lazy('comercial:proveedor')
 
+class DetalleProveedor(DetailView):
+    model = proveedor
+    template_name = 'proveedor/detalle_proveedor.html'
+
+class EliminarProveedor(DeleteView):
+    model = proveedor
+    template_name = 'marca/eliminar_marca.html'
+    success_url = reverse_lazy('comercial:marca')
+
+#Marca
 class marca_list(ListView):
     model = marca
     template_name = 'marca/marca_list.html'

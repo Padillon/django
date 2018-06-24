@@ -1,6 +1,6 @@
 from django.urls import include, path
-from apps.inventario.views import index,productos,categoria,proveedor,cliente, \
-    marca_list,CrearMarca,ModificarMarca,DetalleMarca,EliminarMarca
+from apps.inventario.views import index,productos,categoria, \
+    marca_list,CrearMarca,ModificarMarca,DetalleMarca,EliminarMarca,proveedor,CrearProveedor,ModificarProveedor,DetalleProveedor
 from apps.venta.views import ListadoClientes, CrearCliente, ModificarCliente, DetalleCliente
 
 app_name = 'comercial'
@@ -9,7 +9,12 @@ urlpatterns = [
     path('dashboard/',index, name = 'dashboard'),
     path('productos/',productos, name = 'productos'),
     path('categorias/',categoria, name = 'categorias'),
-    path('proveedores/',proveedor, name = 'proveedor'),
+    #proveedores
+    path('proveedores/',proveedor.as_view(), name = 'proveedor'),
+    path('crear_proveedor/',CrearProveedor.as_view(), name = 'crear_proveedor'),
+    path('modificar_proveedor/(?P<pk>.+)/',ModificarProveedor.as_view(), name = 'modificar_proveedor'),
+    path('detalle_marca/(?P<pk>.+)/',DetalleProveedor.as_view(), name = 'detalle_proveedor'),
+    path('eliminar_marca/(?P<pk>.+)/',EliminarMarca.as_view(), name = 'eliminar_proveedor'),
     #Marcas
     path('marcas/',marca_list.as_view(), name = 'marca'),
     path('crear_marca/',CrearMarca.as_view(), name = 'crear_marcas'),
