@@ -17,7 +17,7 @@ def categoria(request):
     return render(request, 'categoria/categoria_list.html')
 
 #Proveedor
-class proveedor(ListView):
+class ListadoProveedor(ListView):
     model = proveedor
     template_name = 'proveedor/proveedor_list.html'
 

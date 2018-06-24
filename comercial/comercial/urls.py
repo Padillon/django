@@ -23,7 +23,7 @@ urlpatterns = [
     path('productos/', include('apps.inventario.urls', namespace='productos')),
     path('marcas/', include('apps.inventario.urls', namespace='marcas')),
     path('categorias/', include('apps.inventario.urls', namespace='categorias')),
-    path('proveedores/', include('apps.inventario.urls', namespace='proveedores')),
+    path('proveedores/', include('apps.inventario.urls', namespace='proveedor')),
     path('clientes/', include('apps.inventario.urls', namespace='cliente')),
 
 ]
