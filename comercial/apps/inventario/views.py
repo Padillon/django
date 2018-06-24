@@ -2,8 +2,8 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.urls import reverse_lazy
 from django.views.generic import CreateView,UpdateView,ListView,DetailView,DeleteView
-from apps.inventario.forms import marcaForm,proveedorForm
-from apps.inventario.models import marca,proveedor
+from apps.inventario.forms import marcaForm,proveedorForm,categoriaForm
+from apps.inventario.models import marca,proveedor,categoria
 
 # Create your views here.
 
@@ -12,9 +12,6 @@ def index(request):
 
 def productos(request):
     return render(request, 'productos/productos_list.html')
-
-def categoria(request):
-    return render(request, 'categoria/categoria_list.html')
 
 #Proveedor
 class ListadoProveedor(ListView):
@@ -65,3 +62,28 @@ class EliminarMarca(DeleteView):
     model = marca
     template_name = 'marca/eliminar_marca.html'
     success_url = reverse_lazy('comercial:marca')
+
+#Categoria
+class categoria_list(ListView):
+    model = categoria
+    template_name = 'categoria/categoria_list.html'
+
+class CrearCategoria(CreateView):
+    template_name = 'categoria/categorias.html'
+    form_class = categoriaForm
+    success_url = reverse_lazy('comercial:categoria')
+
+class ModificarCategoria(UpdateView):
+    model = categoria
+    template_name = 'categoria/categorias.html'
+    form_class = marcaForm
+    success_url = reverse_lazy('comercial:categoria')
+
+class DetalleCategoria(DetailView):
+    model = categoria
+    template_name = 'categoria/detalle_categoria.html'
+
+class EliminarCategoria(DeleteView):
+    model = categoria
+    template_name = 'categoria/eliminar_categoria.html'
+    success_url = reverse_lazy('comercial:categoria')

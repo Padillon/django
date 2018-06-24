@@ -1,6 +1,6 @@
 from django import forms
-from apps.inventario.models import productos,marca,proveedor
-
+from apps.inventario.models import productos,marca,proveedor,categoria
+#productos
 class productoForm(forms.ModelForm):
     class Meta:
         model = productos
@@ -33,7 +33,7 @@ class productoForm(forms.ModelForm):
             'marca': forms.Select(attrs={'class':'form-control'}),
             'proveedor': forms.Select(attrs={'class':'form-control'}),
         }
-
+#Marca
 class marcaForm(forms.ModelForm):
     class Meta:
         model = marca
@@ -54,7 +54,7 @@ class marcaForm(forms.ModelForm):
             'descripcion': forms.TextInput(attrs={'class':'form-control',
                                                   'placeholder':"Descripcion de la marca"}),
         }
-
+#Proveedor
 class proveedorForm(forms.ModelForm):
     class Meta:
         model = proveedor
@@ -78,4 +78,26 @@ class proveedorForm(forms.ModelForm):
                                                   'placeholder':"Descripcion del proveedor"}),
             'telefono': forms.TextInput(attrs={'class':'form-control',
                                                 'placeholder':"telefono de contacto"}),
+        }
+
+#categoria
+class categoriaForm(forms.ModelForm):
+    class Meta:
+        model = categoria
+        fields = [
+            'nombre',
+            'descripcion',
+        ]
+
+        labels = {
+            'nombre':'Nombre',
+            'descripcion':'Descripcion',
+
+        }
+
+        widgets = {
+            'nombre': forms.TextInput(attrs={'class':'form-control',
+                                             'placeholder':"Nombre de la marca"}),
+            'descripcion': forms.TextInput(attrs={'class':'form-control',
+                                                  'placeholder':"Descripcion de la marca"}),
         }
