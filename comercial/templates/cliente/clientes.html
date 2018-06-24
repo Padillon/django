@@ -13,7 +13,7 @@
                    <li class="active">Lista</li>
                </ul>
                <!--breadcrumbs end -->
-              <h1 class="h1">Lista</h1>
+              <h1 class="h1">Clientes</h1>
            </div>
 
 
@@ -60,12 +60,9 @@
                         <td>{{ Cliente.registro }}</td>
                         <td>{{ Cliente.telefono }}</td>
                         <td class="text-center">
-                       <a onclick="return abrir_modal('{% url 'comercial:detalle_cliente' Cliente.pk %}')" class="btn btn-success btn-trans" >
-                           <span class="glyphicon glyphicon-eye-open"></span>
-                       </a>
-                       <a onclick="return abrir_modal('{% url 'comercial:modificar_cliente' Cliente.pk %}')" class="btn btn-warning btn-trans">
-                           <span class="glyphicon glyphicon-edit"></span>
-                       </a>
+                       <a onclick="return abrir_modal('{% url 'comercial:detalle_cliente' Cliente.pk %}')" class="btn btn-success btn-trans" > Ver </a>
+                       <a onclick="return abrir_modal('{% url 'comercial:modificar_cliente' Cliente.pk %}')" class="btn btn-warning btn-trans">Editar</a>
+                       <a onclick="return abrir_modal('{% url 'comercial:eliminar_cliente' Cliente.pk %}')" class="btn btn-danger btn-trans">Eliminar</a>
 
                    </td>
                   		</tr>

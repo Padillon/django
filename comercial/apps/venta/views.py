@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.views.generic import CreateView,UpdateView,ListView,DetailView
+from django.views.generic import CreateView,UpdateView,ListView,DetailView,DeleteView
 from django.urls import reverse_lazy
 from django.http import JsonResponse
 from django.template.loader import render_to_string
@@ -25,5 +25,10 @@ class ModificarCliente(UpdateView):
 class DetalleCliente(DetailView):
     model = Cliente
     template_name = 'cliente/detalle_cliente.html'
+
+class EliminarCliente(DeleteView):
+    model = Cliente
+    template_name = 'cliente/Eliminar_cliente.html'
+    success_url = reverse_lazy('comercial:listado_clientes')
 
 # Create your views here.
