@@ -2,16 +2,37 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.urls import reverse_lazy
 from django.views.generic import CreateView,UpdateView,ListView,DetailView,DeleteView
-from apps.inventario.forms import marcaForm,proveedorForm,categoriaForm
-from apps.inventario.models import marca,proveedor,categoria
+from apps.inventario.forms import marcaForm,proveedorForm,categoriaForm, productoForm
+from apps.inventario.models import marca,proveedor,categoria,productos
 
 # Create your views here.
+class index(ListView):
+    model = productos
+    template_name = 'dashboard/dashboard.html'
+#Productos
+class ListadoProductos(ListView):
+    model = productos
+    template_name = 'productos/productos_list.html'
 
-def index(request):
-    return render(request, 'dashboard/dashboard.html')
+class CrearProducto(CreateView):
+    template_name = 'productos/productos.html'
+    form_class = productoForm
+    success_url = reverse_lazy('comercial:productos')
 
-def productos(request):
-    return render(request, 'productos/productos_list.html')
+class ModificarProducto(UpdateView):
+    model = productos
+    template_name = 'productos/productos.html'
+    form_class = productoForm
+    success_url = reverse_lazy('comercial:productos')
+
+class DetalleProductos(DetailView):
+    model = productos
+    template_name = 'productos/detalle_productos.html'
+
+class EliminarProducto(DeleteView):
+    model = productos
+    template_name = 'productos/eliminar_productos.html'
+    success_url = reverse_lazy('comercial:productos')
 
 #Proveedor
 class ListadoProveedor(ListView):

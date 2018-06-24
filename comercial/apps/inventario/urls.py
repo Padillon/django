@@ -1,16 +1,23 @@
 from django.urls import include, path
-from apps.inventario.views import index,productos,categoria, \
+from apps.inventario.views import index,categoria, \
     marca_list,CrearMarca,ModificarMarca,DetalleMarca,EliminarMarca,proveedor, \
     CrearProveedor,ModificarProveedor,DetalleProveedor, ListadoProveedor,EliminarProveedor, \
-    categoria_list, CrearCategoria, ModificarCategoria, DetalleCategoria, EliminarCategoria
+    categoria_list, CrearCategoria, ModificarCategoria, DetalleCategoria, EliminarCategoria, \
+    ListadoProductos, CrearProducto,ModificarProducto,DetalleProductos,EliminarProducto
 
 from apps.venta.views import ListadoClientes, CrearCliente, ModificarCliente, DetalleCliente, EliminarCliente
 
 app_name = 'comercial'
 
 urlpatterns = [
-    path('dashboard/',index, name = 'dashboard'),
-    path('productos/',productos, name = 'productos'),
+    path('dashboard/',index.as_view(), name = 'dashboard'),
+    #Productos
+    path('productos/',ListadoProductos.as_view(), name = 'productos'),
+    path('crear_productos/',CrearProducto.as_view(), name = 'crear_productos'),
+    path('modificar_productos/(?P<pk>.+)/',ModificarProducto.as_view(), name = 'modificar_productos'),
+    path('detalle_producto/(?P<pk>.+)/',DetalleProductos.as_view(), name = 'detalle_productos'),
+    path('eliminar_producto/(?P<pk>.+)/',EliminarProducto.as_view(), name = 'eliminar_producto'),
+
     #proveedores
     path('proveedores/',ListadoProveedor.as_view(), name = 'proveedor'),
     path('crear_proveedor/',CrearProveedor.as_view(), name = 'crear_proveedores'),

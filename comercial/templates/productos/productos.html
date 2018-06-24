@@ -1,13 +1,17 @@
 <div class="modal-dialog modal-lg">
         <div class="modal-content">
                 {% if object %}
-                <form role="form" action="{% url 'comercial:modificar_marcas' object.pk %}" method="post">
+                <form role="form" action="{% url 'comercial:modificar_productos' object.pk %}" method="post">
+                  <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal">x</button>
+                  <h3>Modificar producto.</h3>
                 {% else %}
-                <form role="form" action="{% url 'comercial:crear_marcas' %}" method="post">
+                <form role="form" action="{% url 'comercial:crear_productos' %}" method="post">
+                  <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal">x</button>
+                  <h3>Agregar producto.</h3>
                 {% endif %}
-                        <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal">x</button>
-                <h3>Agregar marca.</h3>
+
             </div>
             <div class="modal-body">
                                 {% csrf_token %}

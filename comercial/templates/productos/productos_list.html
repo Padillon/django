@@ -13,10 +13,85 @@
                    <li class="active">Lista</li>
                </ul>
                <!--breadcrumbs end -->
-              <h1 class="h1">Hola prro x2</h1>
+              <h1 class="h1">Productos</h1>
            </div>
-       </div>
 
-   </section>
-</section>
+
+      </div>
+      <div class="col-md-offset-11">
+          <a class="btn btn-primary" onclick="return abrir_modal('{% url 'comercial:crear_productos'  %}')" >
+            <i class="fa fa-plus"></i> Nuevo</a>
+      </div>
+
+
+   <div class="row">
+           <div class="col-md-12">
+               <div class="panel panel-default">
+                 <div class="panel-heading">
+                   <h3 class="panel-title">Detalle</h3>
+                   <div class="actions pull-right">
+                       <i class="fa fa-chevron-down"></i>
+                       <i class="fa fa-times"></i>
+                   </div>
+                 </div>
+                 <div class="panel-body">
+                   <table id="example" class="table table-striped hover" cellspacing="0" width="100%">
+                     <thead>
+                   		<tr>
+                   			<td>#</td>
+                        <td>Codigo</td>
+                   			<td>Nombre</td>
+                   			<td>Descripcion</td>
+                        <td>Precio</td>
+                        <td>Stock</td>
+                        <td>Estado</td>
+                        <td>Categoria</td>
+                        <td>Marca</td>
+                        <td>Proveedor</td>
+                   			<td>Accion</td>
+                   		</tr>
+                   	</thead>
+                    <tbody>
+                  		{% if object_list %}
+                  		{% for Producto in object_list %}
+                  		<tr>
+                  			<td>{{ Producto.id }}</td>
+                        <td>{{ Producto.codigo }}</td>
+                  			<td>{{ Producto.nombre }}</td>
+                  			<td>{{ Producto.descripcion }}</td>
+                        <td>{{ Producto.precio }}</td>
+                        {% if Producto.stock > Producto.stock_min %}
+                        <td><a class="label label-info" > {{ Producto.stock }} </a></td>
+                        {% else %}
+                        <td><a class="label label-danger" >{{ Producto.stock }}</a></td>
+                        {% endif %}
+                        {% if Producto.estado_id == 1 %}
+                  			<td><a class="label label-success" >Activo</a></td>
+                        {% else %}
+                        <td><a class="label label-danger" >Inactivo</a></td>
+                        {% endif %}
+                        <td>{{ Producto.categoria.nombre }}</td>
+                  			<td>{{ Producto.marca.nombre }}</td>
+                  			<td>{{ Producto.proveedor.nombre }}</td>
+                  			<td>
+                  				<a class="btn btn-success btn-trans" onclick="return abrir_modal('{% url 'comercial:detalle_productos' Producto.pk  %}')" >Ver</a>
+                  				<a class="btn btn-warning btn-trans" onclick="return abrir_modal('{% url 'comercial:modificar_productos' Producto.pk  %}')">Editar</a>
+                  				<a class="btn btn-danger btn-trans" onclick="return abrir_modal('{% url 'comercial:eliminar_producto' Producto.pk  %}')" >Eliminar</a>
+                  			</td>
+                  		</tr>
+                  		{% endfor %}
+                  		{% else %}
+                  		<h1>No hay registros de jugadores</h1>
+                  		{% endif %}
+                  	</tbody>
+                  </table>
+                  <div id="popup" class="modal fade" role="dialog">
+                 </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </section>
+
 {% endblock %}
