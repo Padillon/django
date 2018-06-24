@@ -1,9 +1,9 @@
 <div class="modal-dialog modal-lg ">
         <div class="modal-content">
-                <form role="form" method="post" action="{% url 'comercial:eliminar_marcas' object.pk %}">
+                <form role="form" method="post" action="{% url 'comercial:eliminar_proveedor' object.pk %}">
                     <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal">x</button>
-                <h3>¿Estas seguro que quieres eliminar la marca?.</h3>
+                <h3>¿Estas seguro que quieres eliminar el proveedor?.</h3>
             </div>
             <div class="modal-body">
                                 {% csrf_token %}
@@ -14,6 +14,8 @@
                                                   <p>{{ object.nombre }}</p>
                                                   <label>Descripcion:</label>
                                                   <p>{{ object.descripcion }}</p>
+                                                  <label>Telefono:</label>
+                                                  <p>{{ object.telefono }}</p>
                                           </div>
                                         </div>
                                 </div>

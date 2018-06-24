@@ -38,8 +38,8 @@ class DetalleProveedor(DetailView):
 
 class EliminarProveedor(DeleteView):
     model = proveedor
-    template_name = 'marca/eliminar_marca.html'
-    success_url = reverse_lazy('comercial:marca')
+    template_name = 'proveedor/eliminar_proveedor.html'
+    success_url = reverse_lazy('comercial:proveedor')
 
 #Marca
 class marca_list(ListView):
