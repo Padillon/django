@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: localhost:3306
--- Tiempo de generación: 25-06-2018 a las 15:59:49
+-- Tiempo de generación: 26-06-2018 a las 02:44:57
 -- Versión del servidor: 10.1.26-MariaDB-0+deb9u1
 -- Versión de PHP: 7.0.27-0+deb9u1
 
@@ -96,7 +96,13 @@ INSERT INTO `auth_permission` (`id`, `name`, `content_type_id`, `codename`) VALU
 (33, 'Can delete cliente', 11, 'delete_cliente'),
 (34, 'Can add estado', 12, 'add_estado'),
 (35, 'Can change estado', 12, 'change_estado'),
-(36, 'Can delete estado', 12, 'delete_estado');
+(36, 'Can delete estado', 12, 'delete_estado'),
+(37, 'Can add detalle_venta', 13, 'add_detalle_venta'),
+(38, 'Can change detalle_venta', 13, 'change_detalle_venta'),
+(39, 'Can delete detalle_venta', 13, 'delete_detalle_venta'),
+(40, 'Can add venta', 14, 'add_venta'),
+(41, 'Can change venta', 14, 'change_venta'),
+(42, 'Can delete venta', 14, 'delete_venta');
 
 -- --------------------------------------------------------
 
@@ -182,10 +188,12 @@ INSERT INTO `django_content_type` (`id`, `app_label`, `model`) VALUES
 (2, 'auth', 'user'),
 (5, 'contenttypes', 'contenttype'),
 (8, 'inventario', 'categoria'),
+(13, 'inventario', 'detalle_venta'),
 (12, 'inventario', 'estado'),
 (9, 'inventario', 'marca'),
 (7, 'inventario', 'productos'),
 (10, 'inventario', 'proveedor'),
+(14, 'inventario', 'venta'),
 (6, 'sessions', 'session'),
 (11, 'venta', 'cliente');
 
@@ -231,7 +239,11 @@ INSERT INTO `django_migrations` (`id`, `app`, `name`, `applied`) VALUES
 (23, 'inventario', '0007_productos_estado', '2018-06-24 05:04:16.052257'),
 (24, 'inventario', '0008_auto_20180624_0528', '2018-06-24 05:28:13.911048'),
 (25, 'inventario', '0009_auto_20180624_0541', '2018-06-24 05:41:58.330870'),
-(26, 'inventario', '0010_productos_stock_min', '2018-06-24 20:24:44.074154');
+(26, 'inventario', '0010_productos_stock_min', '2018-06-24 20:24:44.074154'),
+(27, 'inventario', '0002_cliente_detalle_venta_venta', '2018-06-26 01:20:29.384565'),
+(28, 'inventario', '0003_auto_20180625_1816', '2018-06-26 01:20:30.466733'),
+(29, 'inventario', '0004_auto_20180625_2130', '2018-06-26 01:20:35.107550'),
+(30, 'inventario', '0005_auto_20180626_0208', '2018-06-26 02:08:22.253026');
 
 -- --------------------------------------------------------
 
@@ -263,6 +275,19 @@ CREATE TABLE `inventario_categoria` (
 
 INSERT INTO `inventario_categoria` (`id`, `nombre`, `descripcion`) VALUES
 (1, 'Higiene personal', 'Productos varios de higiene personales');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `inventario_detalle_venta`
+--
+
+CREATE TABLE `inventario_detalle_venta` (
+  `id` int(11) NOT NULL,
+  `cantidad` int(11) NOT NULL,
+  `venta_id` int(11) DEFAULT NULL,
+  `productos_id` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 -- --------------------------------------------------------
 
@@ -350,6 +375,20 @@ CREATE TABLE `inventario_proveedor` (
 INSERT INTO `inventario_proveedor` (`id`, `nombre`, `descripcion`, `telefono`) VALUES
 (2, 'Lactolac', 'Leche y todos sus derivados', '22736000'),
 (3, 'Industrias La Constancia', 'La Coca Cola', '22577777');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `inventario_venta`
+--
+
+CREATE TABLE `inventario_venta` (
+  `id` int(11) NOT NULL,
+  `fecha` date NOT NULL,
+  `total` int(11) NOT NULL,
+  `cliente_id` int(11) DEFAULT NULL,
+  `codigo` varchar(10) COLLATE utf8_spanish_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 -- --------------------------------------------------------
 
@@ -457,6 +496,14 @@ ALTER TABLE `inventario_categoria`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indices de la tabla `inventario_detalle_venta`
+--
+ALTER TABLE `inventario_detalle_venta`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `inventario_detalle_v_venta_id_16b21afe_fk_inventari` (`venta_id`),
+  ADD KEY `inventario_detalle_v_productos_id_c0df8f48_fk_inventari` (`productos_id`);
+
+--
 -- Indices de la tabla `inventario_estado`
 --
 ALTER TABLE `inventario_estado`
@@ -485,6 +532,14 @@ ALTER TABLE `inventario_proveedor`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indices de la tabla `inventario_venta`
+--
+ALTER TABLE `inventario_venta`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `codigo` (`codigo`),
+  ADD KEY `inventario_venta_cliente_id_19650076_fk_venta_cliente_id` (`cliente_id`);
+
+--
 -- Indices de la tabla `venta_cliente`
 --
 ALTER TABLE `venta_cliente`
@@ -508,7 +563,7 @@ ALTER TABLE `auth_group_permissions`
 -- AUTO_INCREMENT de la tabla `auth_permission`
 --
 ALTER TABLE `auth_permission`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=43;
 --
 -- AUTO_INCREMENT de la tabla `auth_user`
 --
@@ -533,17 +588,22 @@ ALTER TABLE `django_admin_log`
 -- AUTO_INCREMENT de la tabla `django_content_type`
 --
 ALTER TABLE `django_content_type`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 --
 -- AUTO_INCREMENT de la tabla `django_migrations`
 --
 ALTER TABLE `django_migrations`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
 --
 -- AUTO_INCREMENT de la tabla `inventario_categoria`
 --
 ALTER TABLE `inventario_categoria`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+--
+-- AUTO_INCREMENT de la tabla `inventario_detalle_venta`
+--
+ALTER TABLE `inventario_detalle_venta`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT de la tabla `inventario_estado`
 --
@@ -564,6 +624,11 @@ ALTER TABLE `inventario_productos`
 --
 ALTER TABLE `inventario_proveedor`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+--
+-- AUTO_INCREMENT de la tabla `inventario_venta`
+--
+ALTER TABLE `inventario_venta`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT de la tabla `venta_cliente`
 --
@@ -608,6 +673,13 @@ ALTER TABLE `django_admin_log`
   ADD CONSTRAINT `django_admin_log_user_id_c564eba6_fk_auth_user_id` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`);
 
 --
+-- Filtros para la tabla `inventario_detalle_venta`
+--
+ALTER TABLE `inventario_detalle_venta`
+  ADD CONSTRAINT `inventario_detalle_v_productos_id_c0df8f48_fk_inventari` FOREIGN KEY (`productos_id`) REFERENCES `inventario_productos` (`id`),
+  ADD CONSTRAINT `inventario_detalle_v_venta_id_16b21afe_fk_inventari` FOREIGN KEY (`venta_id`) REFERENCES `inventario_venta` (`id`);
+
+--
 -- Filtros para la tabla `inventario_productos`
 --
 ALTER TABLE `inventario_productos`
@@ -615,6 +687,12 @@ ALTER TABLE `inventario_productos`
   ADD CONSTRAINT `inventario_productos_estado_id_257f589d_fk_inventario_estado_id` FOREIGN KEY (`estado_id`) REFERENCES `inventario_estado` (`id`),
   ADD CONSTRAINT `inventario_productos_marca_id_cfdfb031_fk_inventario_marca_id` FOREIGN KEY (`marca_id`) REFERENCES `inventario_marca` (`id`),
   ADD CONSTRAINT `inventario_productos_proveedor_id_db7e6c74_fk_inventari` FOREIGN KEY (`proveedor_id`) REFERENCES `inventario_proveedor` (`id`);
+
+--
+-- Filtros para la tabla `inventario_venta`
+--
+ALTER TABLE `inventario_venta`
+  ADD CONSTRAINT `inventario_venta_cliente_id_19650076_fk_venta_cliente_id` FOREIGN KEY (`cliente_id`) REFERENCES `venta_cliente` (`id`);
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
