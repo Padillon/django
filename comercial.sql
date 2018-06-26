@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: localhost:3306
--- Tiempo de generación: 22-06-2018 a las 19:56:54
+-- Tiempo de generación: 25-06-2018 a las 15:59:49
 -- Versión del servidor: 10.1.26-MariaDB-0+deb9u1
 -- Versión de PHP: 7.0.27-0+deb9u1
 
@@ -90,7 +90,13 @@ INSERT INTO `auth_permission` (`id`, `name`, `content_type_id`, `codename`) VALU
 (27, 'Can delete marca', 9, 'delete_marca'),
 (28, 'Can add proveedor', 10, 'add_proveedor'),
 (29, 'Can change proveedor', 10, 'change_proveedor'),
-(30, 'Can delete proveedor', 10, 'delete_proveedor');
+(30, 'Can delete proveedor', 10, 'delete_proveedor'),
+(31, 'Can add cliente', 11, 'add_cliente'),
+(32, 'Can change cliente', 11, 'change_cliente'),
+(33, 'Can delete cliente', 11, 'delete_cliente'),
+(34, 'Can add estado', 12, 'add_estado'),
+(35, 'Can change estado', 12, 'change_estado'),
+(36, 'Can delete estado', 12, 'delete_estado');
 
 -- --------------------------------------------------------
 
@@ -176,10 +182,12 @@ INSERT INTO `django_content_type` (`id`, `app_label`, `model`) VALUES
 (2, 'auth', 'user'),
 (5, 'contenttypes', 'contenttype'),
 (8, 'inventario', 'categoria'),
+(12, 'inventario', 'estado'),
 (9, 'inventario', 'marca'),
 (7, 'inventario', 'productos'),
 (10, 'inventario', 'proveedor'),
-(6, 'sessions', 'session');
+(6, 'sessions', 'session'),
+(11, 'venta', 'cliente');
 
 -- --------------------------------------------------------
 
@@ -216,7 +224,14 @@ INSERT INTO `django_migrations` (`id`, `app`, `name`, `applied`) VALUES
 (16, 'inventario', '0001_initial', '2018-06-21 02:15:52.359008'),
 (17, 'inventario', '0002_marca_proveedor', '2018-06-21 23:58:09.766800'),
 (18, 'inventario', '0003_auto_20180621_2358', '2018-06-21 23:58:25.326040'),
-(19, 'inventario', '0004_proveedor_telefono', '2018-06-22 19:28:53.060407');
+(19, 'inventario', '0004_proveedor_telefono', '2018-06-22 19:28:53.060407'),
+(20, 'venta', '0001_initial', '2018-06-23 03:52:20.480178'),
+(21, 'inventario', '0005_productos_stock', '2018-06-24 04:57:21.757847'),
+(22, 'inventario', '0006_auto_20180624_0453', '2018-06-24 04:57:21.827254'),
+(23, 'inventario', '0007_productos_estado', '2018-06-24 05:04:16.052257'),
+(24, 'inventario', '0008_auto_20180624_0528', '2018-06-24 05:28:13.911048'),
+(25, 'inventario', '0009_auto_20180624_0541', '2018-06-24 05:41:58.330870'),
+(26, 'inventario', '0010_productos_stock_min', '2018-06-24 20:24:44.074154');
 
 -- --------------------------------------------------------
 
@@ -247,7 +262,26 @@ CREATE TABLE `inventario_categoria` (
 --
 
 INSERT INTO `inventario_categoria` (`id`, `nombre`, `descripcion`) VALUES
-(1, 'Higiene personal', 'Productos varios de higiene personal');
+(1, 'Higiene personal', 'Productos varios de higiene personales');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `inventario_estado`
+--
+
+CREATE TABLE `inventario_estado` (
+  `id` int(11) NOT NULL,
+  `nombre` varchar(100) COLLATE utf8_spanish_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+
+--
+-- Volcado de datos para la tabla `inventario_estado`
+--
+
+INSERT INTO `inventario_estado` (`id`, `nombre`) VALUES
+(1, 'Activo'),
+(2, 'Inactivo');
 
 -- --------------------------------------------------------
 
@@ -266,7 +300,8 @@ CREATE TABLE `inventario_marca` (
 --
 
 INSERT INTO `inventario_marca` (`id`, `nombre`, `descripcion`) VALUES
-(1, 'Rexona', 'Productos Rexona');
+(5, 'Rexona', 'Productos Roxana'),
+(6, 'Refresco Coca Cola', 'Gaseosa 1.5l');
 
 -- --------------------------------------------------------
 
@@ -282,15 +317,18 @@ CREATE TABLE `inventario_productos` (
   `precio` double NOT NULL,
   `categoria_id` int(11) DEFAULT NULL,
   `marca_id` int(11) DEFAULT NULL,
-  `proveedor_id` int(11) DEFAULT NULL
+  `proveedor_id` int(11) DEFAULT NULL,
+  `stock` int(11) NOT NULL,
+  `estado_id` int(11) DEFAULT NULL,
+  `stock_min` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 --
 -- Volcado de datos para la tabla `inventario_productos`
 --
 
-INSERT INTO `inventario_productos` (`id`, `codigo`, `nombre`, `descripcion`, `precio`, `categoria_id`, `marca_id`, `proveedor_id`) VALUES
-(1, 100, 'Desodorante axe', 'Desodorante en spry', 2.5, 1, 1, 1);
+INSERT INTO `inventario_productos` (`id`, `codigo`, `nombre`, `descripcion`, `precio`, `categoria_id`, `marca_id`, `proveedor_id`, `stock`, `estado_id`, `stock_min`) VALUES
+(3, 315681, 'Refresco Coca Cola', 'Gaseosa 1.5l', 1, 1, 6, 3, 4, 2, 5);
 
 -- --------------------------------------------------------
 
@@ -310,7 +348,30 @@ CREATE TABLE `inventario_proveedor` (
 --
 
 INSERT INTO `inventario_proveedor` (`id`, `nombre`, `descripcion`, `telefono`) VALUES
-(1, 'Unilever', 'Productos de limpieza y aseo personal', '22222121');
+(2, 'Lactolac', 'Leche y todos sus derivados', '22736000'),
+(3, 'Industrias La Constancia', 'La Coca Cola', '22577777');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `venta_cliente`
+--
+
+CREATE TABLE `venta_cliente` (
+  `id` int(11) NOT NULL,
+  `nombre` varchar(50) COLLATE utf8_spanish_ci NOT NULL,
+  `apellido` varchar(70) COLLATE utf8_spanish_ci NOT NULL,
+  `direccion` varchar(80) COLLATE utf8_spanish_ci NOT NULL,
+  `registro` varchar(25) COLLATE utf8_spanish_ci NOT NULL,
+  `telefono` varchar(12) COLLATE utf8_spanish_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+
+--
+-- Volcado de datos para la tabla `venta_cliente`
+--
+
+INSERT INTO `venta_cliente` (`id`, `nombre`, `apellido`, `direccion`, `registro`, `telefono`) VALUES
+(2, 'Carlos Fermin', 'Padilla Ferrufino', 'San Miguel', '138513-0', '61099440');
 
 --
 -- Índices para tablas volcadas
@@ -396,6 +457,12 @@ ALTER TABLE `inventario_categoria`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indices de la tabla `inventario_estado`
+--
+ALTER TABLE `inventario_estado`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indices de la tabla `inventario_marca`
 --
 ALTER TABLE `inventario_marca`
@@ -408,12 +475,19 @@ ALTER TABLE `inventario_productos`
   ADD PRIMARY KEY (`id`),
   ADD KEY `inventario_productos_categoria_id_33eb7b1a_fk_inventari` (`categoria_id`),
   ADD KEY `inventario_productos_marca_id_cfdfb031_fk_inventario_marca_id` (`marca_id`),
-  ADD KEY `inventario_productos_proveedor_id_db7e6c74_fk_inventari` (`proveedor_id`);
+  ADD KEY `inventario_productos_proveedor_id_db7e6c74_fk_inventari` (`proveedor_id`),
+  ADD KEY `inventario_productos_estado_id_257f589d` (`estado_id`);
 
 --
 -- Indices de la tabla `inventario_proveedor`
 --
 ALTER TABLE `inventario_proveedor`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indices de la tabla `venta_cliente`
+--
+ALTER TABLE `venta_cliente`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -434,7 +508,7 @@ ALTER TABLE `auth_group_permissions`
 -- AUTO_INCREMENT de la tabla `auth_permission`
 --
 ALTER TABLE `auth_permission`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
 --
 -- AUTO_INCREMENT de la tabla `auth_user`
 --
@@ -459,32 +533,42 @@ ALTER TABLE `django_admin_log`
 -- AUTO_INCREMENT de la tabla `django_content_type`
 --
 ALTER TABLE `django_content_type`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 --
 -- AUTO_INCREMENT de la tabla `django_migrations`
 --
 ALTER TABLE `django_migrations`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
 --
 -- AUTO_INCREMENT de la tabla `inventario_categoria`
 --
 ALTER TABLE `inventario_categoria`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 --
+-- AUTO_INCREMENT de la tabla `inventario_estado`
+--
+ALTER TABLE `inventario_estado`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+--
 -- AUTO_INCREMENT de la tabla `inventario_marca`
 --
 ALTER TABLE `inventario_marca`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 --
 -- AUTO_INCREMENT de la tabla `inventario_productos`
 --
 ALTER TABLE `inventario_productos`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 --
 -- AUTO_INCREMENT de la tabla `inventario_proveedor`
 --
 ALTER TABLE `inventario_proveedor`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+--
+-- AUTO_INCREMENT de la tabla `venta_cliente`
+--
+ALTER TABLE `venta_cliente`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 --
 -- Restricciones para tablas volcadas
 --
@@ -528,6 +612,7 @@ ALTER TABLE `django_admin_log`
 --
 ALTER TABLE `inventario_productos`
   ADD CONSTRAINT `inventario_productos_categoria_id_33eb7b1a_fk_inventari` FOREIGN KEY (`categoria_id`) REFERENCES `inventario_categoria` (`id`),
+  ADD CONSTRAINT `inventario_productos_estado_id_257f589d_fk_inventario_estado_id` FOREIGN KEY (`estado_id`) REFERENCES `inventario_estado` (`id`),
   ADD CONSTRAINT `inventario_productos_marca_id_cfdfb031_fk_inventario_marca_id` FOREIGN KEY (`marca_id`) REFERENCES `inventario_marca` (`id`),
   ADD CONSTRAINT `inventario_productos_proveedor_id_db7e6c74_fk_inventari` FOREIGN KEY (`proveedor_id`) REFERENCES `inventario_proveedor` (`id`);
 

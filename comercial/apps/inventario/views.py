@@ -3,7 +3,7 @@ from django.http import HttpResponse
 from django.urls import reverse_lazy
 from django.views.generic import CreateView,UpdateView,ListView,DetailView,DeleteView
 from apps.inventario.forms import marcaForm,proveedorForm,categoriaForm, productoForm
-from apps.inventario.models import marca,proveedor,categoria,productos
+from apps.inventario.models import *
 
 # Create your views here.
 class index(ListView):
@@ -108,3 +108,4 @@ class EliminarCategoria(DeleteView):
     model = categoria
     template_name = 'categoria/eliminar_categoria.html'
     success_url = reverse_lazy('comercial:categoria')
+   

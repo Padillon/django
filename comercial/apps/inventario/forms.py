@@ -1,5 +1,5 @@
 from django import forms
-from apps.inventario.models import productos,marca,proveedor,categoria
+from apps.inventario.models import *
 #productos
 class productoForm(forms.ModelForm):
     class Meta:
@@ -106,7 +106,8 @@ class categoriaForm(forms.ModelForm):
 
         widgets = {
             'nombre': forms.TextInput(attrs={'class':'form-control',
-                                             'placeholder':"Nombre de la marca"}),
+                                             'placeholder':"Nombre de la categoria"}),
             'descripcion': forms.TextInput(attrs={'class':'form-control',
-                                                  'placeholder':"Descripcion de la marca"}),
+                                                  'placeholder':"Descripcion de la categoria"}),
         }
+        

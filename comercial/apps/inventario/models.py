@@ -1,5 +1,5 @@
 from django.db import models
-
+from apps.venta.models import Cliente
 # Create your models here.
 class estado(models.Model):
     id = models.AutoField(primary_key=True)
@@ -7,6 +7,7 @@ class estado(models.Model):
 
     def __str__(self):
         return '{}'.format(self.nombre)
+        
 
 
 class categoria(models.Model):
@@ -47,3 +48,18 @@ class productos(models.Model):
     categoria = models.ForeignKey(categoria, null=True, blank=True, on_delete=models.CASCADE)
     marca = models.ForeignKey(marca, null=True, blank=True, on_delete=models.CASCADE)
     proveedor = models.ForeignKey(proveedor, null=True, blank=True, on_delete=models.CASCADE)
+
+class detalle_venta(models.Model):
+    id = models.AutoField(primary_key=True)
+    cantidad = models.IntegerField(max_length=10000)
+    productos = models.ManyToManyField(productos)
+    subtotal = models.FloatField(max_length=100)
+
+    
+class venta(models.Model):
+    id = models.AutoField(primary_key=True)
+    fecha = models.DateField()
+    cliente = models.ForeignKey(Cliente, null=True, blank=True, on_delete=models.CASCADE)
+    total = models.IntegerField(max_length=100)
+    detalle = models.ForeignKey(detalle_venta, null=True, blank=True, on_delete=models.CASCADE)
+
