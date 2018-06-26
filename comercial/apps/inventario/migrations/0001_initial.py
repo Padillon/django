@@ -43,6 +43,7 @@ class Migration(migrations.Migration):
                 ('nombre', models.CharField(max_length=100)),
                 ('descripcion', models.CharField(max_length=100)),
                 ('precio', models.FloatField(max_length=100)),
+                ('precio_compra', models.FloatField(max_length=100)),
                 ('stock', models.IntegerField(max_length=10000)),
                 ('stock_min', models.IntegerField(max_length=10000)),
                 ('categoria', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to='inventario.categoria')),

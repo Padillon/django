@@ -9,6 +9,7 @@ class productoForm(forms.ModelForm):
             'nombre',
             'descripcion',
             'precio',
+            'precio_compra',
             'stock',
             'stock_min',
             'estado',
@@ -22,6 +23,7 @@ class productoForm(forms.ModelForm):
             'nombre':'nombre',
             'descripcion':'descripcion',
             'precio':'precio',
+            'precio_compra':'precio_compra',
             'stock':'Estock',
             'stock_min':'Estock Minimo',
             'Estado':'Estado',
@@ -35,6 +37,7 @@ class productoForm(forms.ModelForm):
             'nombre': forms.TextInput(attrs={'class':'form-control'}),
             'descripcion': forms.TextInput(attrs={'class':'form-control'}),
             'precio': forms.TextInput(attrs={'class':'form-control'}),
+            'precio_compra': forms.TextInput(attrs={'class':'form-control'}),
             'stock': forms.TextInput(attrs={'class':'form-control'}),
             'stock_min': forms.TextInput(attrs={'class':'form-control'}),
             'estado':  forms.Select(attrs={'class':'form-control'}),
@@ -110,4 +113,3 @@ class categoriaForm(forms.ModelForm):
             'descripcion': forms.TextInput(attrs={'class':'form-control',
                                                   'placeholder':"Descripcion de la categoria"}),
         }
-        

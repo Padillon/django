@@ -43,6 +43,7 @@ class productos(models.Model):
     nombre = models.CharField(max_length=100)
     descripcion = models.CharField(max_length=100)
     precio = models.FloatField(max_length=100)
+    precio_compra =models.FloatField(max_length=100);
     stock = models.IntegerField(max_length=10000)
     stock_min = models.IntegerField(max_length=10000)
     estado = models.ForeignKey(estado, null=True, blank=True, on_delete=models.CASCADE)
