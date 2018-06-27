@@ -43,7 +43,6 @@
                    			<td>Nombre</td>
                    			<td>Descripcion</td>
                         <td>Precio</td>
-                        <td>Precio de compra</td>
                         <td>Stock</td>
                         <td>Estado</td>
                         <td>Categoria</td>
@@ -61,7 +60,6 @@
                   			<td>{{ Producto.nombre }}</td>
                   			<td>{{ Producto.descripcion }}</td>
                         <td>{{ Producto.precio }}</td>
-                        <td>{{ Producto.precio_compra }}</td>
                         {% if Producto.stock > Producto.stock_min %}
                         <td><a class="label label-info" > {{ Producto.stock }} </a></td>
                         {% else %}

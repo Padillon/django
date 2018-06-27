@@ -25,6 +25,6 @@ urlpatterns = [
     path('categorias/', include('apps.inventario.urls', namespace='categorias')),
     path('proveedores/', include('apps.inventario.urls', namespace='proveedor')),
     path('clientes/', include('apps.inventario.urls', namespace='cliente')),
-    path('ventas/', include('apps.inventario.urls', namespace='venta')),
+    path('vender/', include('apps.inventario.urls', namespace='vender')),
 
 ]

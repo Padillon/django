@@ -7,9 +7,9 @@
            <div class="col-md-12">
                <!--breadcrumbs start -->
                <ul class="breadcrumb">
-                   <li><a href="#">Comercial</a>
+                   <li><a href="#">Almacen</a>
                    </li>
-                   <li>Venta</li>
+                   <li>ventas</li>
                    <li class="active">Lista</li>
                </ul>
                <!--breadcrumbs end -->
@@ -19,7 +19,7 @@
 
       </div>
       <div class="col-md-offset-11">
-          <a class="btn btn-primary" onclick="return abrir_modal('{% url 'comercial:venta_crear'  %}')" >
+          <a class="btn btn-primary" href="{% url 'comercial:crear_venta'%}">
             <i class="fa fa-plus"></i> Nuevo</a>
       </div>
 
@@ -39,28 +39,30 @@
                      <thead>
                    		<tr>
                    			<td>#</td>
+                   			<td>Codigo</td>
                    			<td>Fecha</td>
-                   			<td>Cliente</td>
-                        <td>Total</td>
+                        <td>Cliente</td>
+                   			<td>Total</td>
                    		</tr>
                    	</thead>
                     <tbody>
                   		{% if object_list %}
-                  		{% for Venta in object_list %}
+                  		{% for venta in object_list %}
                   		<tr>
-                  			<td>{{ Venta.id }}</td>
-                        <td>{{ Venta.fecha }}</td>
-                  			<td>{{ Venta.cliente }}</td>
-                  			<td>{{ Venta.total }}</td>
+                  			<td>{{ venta.codigo }}</td>
+                  			<td>{{ venta.fecha }}</td>
+                  			<td>{{ venta.cliente }}</td>
+                        <td>{{ venta.total }}</td>
                   			<td>
-                  				<a class="btn btn-success btn-trans" onclick="return abrir_modal('{% url 'comercial:detalle_productos' Producto.pk  %}')" >Ver</a>
-                  				<a class="btn btn-warning btn-trans" onclick="return abrir_modal('{% url 'comercial:modificar_productos' Producto.pk  %}')">Editar</a>
-                  				<a class="btn btn-danger btn-trans" onclick="return abrir_modal('{% url 'comercial:eliminar_producto' Producto.pk  %}')" >Eliminar</a>
+                  				<a class="btn btn-success btn-trans">Ver</a>
+                  				<a class="btn btn-warning btn-trans">Editar</a>
+                  				<a class="btn btn-danger btn-trans" >Eliminar</a>
                   			</td>
                   		</tr>
                   		{% endfor %}
+
                   		{% else %}
-                  		<h1>No hay registros</h1>
+                  		<h1>No hay registros de ventas</h1>
                   		{% endif %}
                   	</tbody>
                   </table>
