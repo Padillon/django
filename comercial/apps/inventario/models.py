@@ -66,7 +66,6 @@ class venta(models.Model):
     codigo = models.CharField(max_length=10, unique=True)
     fecha = models.DateField()
     cliente = models.ForeignKey(Cliente, null=True, blank=True, on_delete=models.CASCADE)
-    productos = models.ManyToManyField(productos, through='detalle_venta')
     total = models.IntegerField(max_length=100)
 
 

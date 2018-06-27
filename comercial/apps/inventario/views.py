@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse
 from django.urls import reverse_lazy
 from django.views.generic import CreateView,UpdateView,ListView,DetailView,DeleteView
-from apps.inventario.forms import marcaForm,proveedorForm,categoriaForm, productoForm
+from apps.inventario.forms import *
 from apps.inventario.models import *
 
 class ListadoClientes(ListView):
@@ -12,14 +12,14 @@ class ListadoClientes(ListView):
 
 class CrearCliente(CreateView):
     template_name = 'cliente/cliente.html'
-    form_class = productoForm
-    success_url = reverse_lazy('comercial:productos')
+    form_class = ClienteForm
+    success_url = reverse_lazy('comercial:listado_clientes')
 
 class ModificarCliente(UpdateView):
     model = Cliente
-    template_name = 'productos/cliente.html'
-    form_class = productoForm
-    success_url = reverse_lazy('comercial:productos')
+    template_name = 'cliente/cliente.html'
+    form_class = ClienteForm
+    success_url = reverse_lazy('comercial:listado_clientes')
 
 class DetalleCliente(DetailView):
     model = Cliente
