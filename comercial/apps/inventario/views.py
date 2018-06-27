@@ -1,9 +1,10 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse
 from django.urls import reverse_lazy
 from django.views.generic import CreateView,UpdateView,ListView,DetailView,DeleteView
 from apps.inventario.forms import marcaForm,proveedorForm,categoriaForm, productoForm
 from apps.inventario.models import *
+
 
 # Create your views here.
 class index(ListView):
@@ -108,4 +109,19 @@ class EliminarCategoria(DeleteView):
     model = categoria
     template_name = 'categoria/eliminar_categoria.html'
     success_url = reverse_lazy('comercial:categoria')
-   
+#ventas
+class ventas_list(ListView):
+    model = venta
+    template_name = 'venta/venta_list.html'
+
+def CrearVenta(request):
+    producto = productos.objects.all()
+    ventas = venta.objects.all()
+    d_ventas = detalle_venta.objects.all()
+    Clientes = Cliente.objects.all()
+
+    return render(
+        request,
+        'venta/crearVenta.html',
+        context={'prod':producto,'venta':ventas,'d_venta':d_ventas,'client':Clientes},
+        )

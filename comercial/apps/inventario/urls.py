@@ -3,7 +3,8 @@ from apps.inventario.views import index,categoria, \
     marca_list,CrearMarca,ModificarMarca,DetalleMarca,EliminarMarca,proveedor, \
     CrearProveedor,ModificarProveedor,DetalleProveedor, ListadoProveedor,EliminarProveedor, \
     categoria_list, CrearCategoria, ModificarCategoria, DetalleCategoria, EliminarCategoria, \
-    ListadoProductos, CrearProducto,ModificarProducto,DetalleProductos,EliminarProducto
+    ListadoProductos, CrearProducto,ModificarProducto,DetalleProductos,EliminarProducto,ventas_list, \
+    CrearVenta
 
 from apps.venta.views import ListadoClientes, CrearCliente, ModificarCliente, DetalleCliente, EliminarCliente
 
@@ -42,6 +43,8 @@ urlpatterns = [
     path('modificar_cliente/(?P<pk>.+)/$',ModificarCliente.as_view(), name="modificar_cliente"),
     path('detalle_cliente/(?P<pk>.+)/$',DetalleCliente.as_view(), name="detalle_cliente"),
     path('eliminar_cliente/(?P<pk>.+)/$',EliminarCliente.as_view(), name="eliminar_cliente"),
+    #ventas
+    path('vender/',ventas_list.as_view(), name="venta_list"),
+    path('nueva_venta/',CrearVenta, name="crear_venta"),
 
-    
 ]

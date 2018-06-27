@@ -63,7 +63,7 @@ class detalle_venta(models.Model):
     venta = models.ForeignKey(venta, null=True, on_delete=models.SET_NULL)
     productos = models.ForeignKey(productos, null=True, on_delete=models.SET_NULL)
     cantidad = models.IntegerField(max_length=10000)
-
+"""
     def precioventa(self):
         return (self.productos.precio)
 
@@ -86,4 +86,4 @@ def update_stock(sender, instace, **kwargs):
     instance.productos.stock -= instance.cantidad
     instance.productos.save()
 
-signals.post_save.connect(update_stock, sender=detalle_venta, dispatch_uid="update_stock_count")
+signals.post_save.connect(update_stock, sender=detalle_venta, dispatch_uid="update_stock_count")"""

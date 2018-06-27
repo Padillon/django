@@ -9,17 +9,17 @@
                <ul class="breadcrumb">
                    <li><a href="#">Almacen</a>
                    </li>
-                   <li>Proveedores</li>
+                   <li>ventas</li>
                    <li class="active">Lista</li>
                </ul>
                <!--breadcrumbs end -->
-              <h1 class="h1">Proveedores</h1>
+              <h1 class="h1">Ventas</h1>
            </div>
 
 
       </div>
       <div class="col-md-offset-11">
-          <a class="btn btn-primary" onclick="return abrir_modal('{% url 'comercial:crear_proveedores'%}')">
+          <a class="btn btn-primary" href="{% url 'comercial:crear_venta'%}">
             <i class="fa fa-plus"></i> Nuevo</a>
       </div>
 
@@ -39,30 +39,30 @@
                      <thead>
                    		<tr>
                    			<td>#</td>
-                   			<td>Nombre</td>
-                   			<td>Descripcion</td>
-                        <td>Telefono</td>
-                   			<td>Accion</td>
+                   			<td>Codigo</td>
+                   			<td>Fecha</td>
+                        <td>Cliente</td>
+                   			<td>Total</td>
                    		</tr>
                    	</thead>
                     <tbody>
                   		{% if object_list %}
-                  		{% for proveedor in object_list %}
+                  		{% for venta in object_list %}
                   		<tr>
-                  			<td>{{ proveedor.id }}</td>
-                  			<td>{{ proveedor.nombre }}</td>
-                  			<td>{{ proveedor.descripcion }}</td>
-                        <td>{{ proveedor.telefono }}</td>
+                  			<td>{{ venta.codigo }}</td>
+                  			<td>{{ venta.fecha }}</td>
+                  			<td>{{ venta.cliente }}</td>
+                        <td>{{ venta.total }}</td>
                   			<td>
-                  				<a class="btn btn-success btn-trans" onclick="return abrir_modal('{% url 'comercial:detalle_proveedor' proveedor.pk %}')">Ver</a>
-                  				<a class="btn btn-warning btn-trans" onclick="return abrir_modal('{% url 'comercial:modificar_proveedor' proveedor.pk %}')">Editar</a>
-                  				<a class="btn btn-danger btn-trans"  onclick="return abrir_modal('{% url 'comercial:eliminar_proveedor' proveedor.pk %}')">Eliminar</a>
+                  				<a class="btn btn-success btn-trans">Ver</a>
+                  				<a class="btn btn-warning btn-trans">Editar</a>
+                  				<a class="btn btn-danger btn-trans" >Eliminar</a>
                   			</td>
                   		</tr>
                   		{% endfor %}
 
                   		{% else %}
-                  		<h1>No hay registros de proveedores</h1>
+                  		<h1>No hay registros de ventas</h1>
                   		{% endif %}
                   	</tbody>
                   </table>
