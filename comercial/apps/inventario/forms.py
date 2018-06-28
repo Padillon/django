@@ -177,18 +177,22 @@ class DetalleCompraForm(forms.ModelForm):
     class Meta:
         model = DetalleCompra
         fields = [
+            'proveedor',
             'producto',
             'cantidad',
             'precio_compra',
         ]
 
         labels = {
+            'proveedor':'Proveedor',
             'producto':'Producto',
             'cantidad':'Cantidad',
             'precio_compra':'Precio',
         }
 
         widgets = {
+            'proveedor': forms.Select(attrs={'class':'form-control',
+                                             'placeholder':"producto"}),
             'producto': forms.Select(attrs={'class':'form-control',
                                              'placeholder':"producto"}),
             'cantidad': forms.TextInput(attrs={'class':'form-control',
