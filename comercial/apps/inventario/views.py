@@ -4,6 +4,9 @@ from django.urls import reverse_lazy
 from django.views.generic import CreateView,UpdateView,ListView,DetailView,DeleteView
 from apps.inventario.forms import *
 from apps.inventario.models import *
+from django.template import RequestContext
+from django.shortcuts import render_to_response
+from django.contrib.auth import authenticate, login
 
 class ListadoClientes(ListView):
     model = Cliente
@@ -180,3 +183,24 @@ def CrearCompra(request):
     else:
         form = DetalleCompraForm()
     return render(request, 'compra/compra.html',{'form':form})
+
+def login_page(request):
+    message = None
+    if request.method == "POST":
+        form = LoginForm(request.POST)
+        if form.is_valid():
+            username = request.POST['username']
+            password = request.POST['password']
+            user = authenticate(username=username, password=password)
+            if user is not None:
+                if user.is_active:
+                    login(request, user)
+                    message ="Bienvenido ingeniero"
+                else:
+                    message = "Tu usuario esta inactivo"
+            else:
+                message = "Nel prro no estas registrado"
+    else:
+        form = LoginForm()
+    return render_to_response('index.htm',{'message':message,'form':form,'user':username},
+                            context_instance=RequestContext(request))

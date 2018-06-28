@@ -133,7 +133,6 @@ class VentaForm(forms.ModelForm):
     class Meta:
         model = venta
         fields = [
-            'fecha',
             'cliente',
             'producto',
             'cantidad',
@@ -200,3 +199,7 @@ class DetalleCompraForm(forms.ModelForm):
             'precio_compra': forms.TextInput(attrs={'class':'form-control',
                                              'placeholder':"cantidad"}),
         }
+
+class LoginForm(forms.Form):
+    username = forms.CharField()
+    password = forms.CharField(widget=forms.PasswordInput())

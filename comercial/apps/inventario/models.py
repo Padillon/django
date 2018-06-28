@@ -93,4 +93,4 @@ class DetalleCompra(models.Model):
     cantidad = models.IntegerField(max_length=10000)
     precio_compra = models.DecimalField(max_digits=5,decimal_places=2)
     total = models.FloatField(max_length=100)
-    fecha = models.DateField()
+    #fecha = models.DateField()

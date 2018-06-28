@@ -15,6 +15,8 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import include, path
+from django.contrib.auth.views import login
+from django.conf.urls import url
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -27,5 +29,5 @@ urlpatterns = [
     path('clientes/', include('apps.inventario.urls', namespace='cliente')),
     path('vender/', include('apps.inventario.urls', namespace='vender')),
     path('compras/', include('apps.inventario.urls', namespace='compra')),
-
+    url(r'^$', login, {'template_name':'index.html'}, name='login')
 ]

@@ -45,4 +45,5 @@ urlpatterns = [
     path('compras/',ListadoCompra.as_view(), name="listado_compras"),
     path('crear_compra/',CrearCompra, name="crear_compra"),
 
+
 ]
