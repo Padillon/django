@@ -148,3 +148,35 @@ def CrearVenta(request):
         'venta/crearVenta.html',
         context={'prod':producto,'venta':ventas,'d_venta':d_ventas,'client':Clientes},
         )
+def venta(request):
+    if request.method == "POST":
+        form = VentaForm(request.POST)
+        if form.is_valid():
+            form.save()
+        return redirect("comercial:venta_list")
+    else:
+        form = VentaForm()
+    return render(request, 'venta/crearVenta.html',{'form':form})
+
+#compra
+class ListadoCompra(ListView):
+    model = Compra
+    template_name = 'compra/compras.html'
+    #context_object_name = 'compras'
+
+def CrearCompra(request):
+    if request.method == "POST":
+        form = DetalleCompraForm(request.POST)
+
+        if form.is_valid():
+            form.save()
+            prod = productos.objects.get(pk=request.POST['producto'])
+            s = int(prod.stock)
+            stock_mas = int (request.POST['cantidad'])
+            total = s+stock_mas
+            prod.stock = total
+            prod.save()
+        return redirect("comercial:listado_compras")
+    else:
+        form = DetalleCompraForm()
+    return render(request, 'compra/compra.html',{'form':form})

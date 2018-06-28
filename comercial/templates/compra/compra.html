@@ -6,10 +6,10 @@
                   <button type="button" class="close" data-dismiss="modal">x</button>
                   <h3>Modificar producto.</h3>
                 {% else %}
-                <form role="form" action="{% url 'comercial:crear_venta' %}" method="post">
+                <form role="form" action="{% url 'comercial:crear_compra' %}" method="post">
                   <div class="modal-header">
                   <button type="button" class="close" data-dismiss="modal">x</button>
-                  <h3>Agregar venta.</h3>
+                  <h3>Agregar compra.</h3>
                 {% endif %}
 
             </div>

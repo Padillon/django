@@ -12,7 +12,8 @@ class Cliente(models.Model):
 
     def __str__(self):
         return '{}'.format(self.nombre)
-
+    def stock(self):
+        return '{}'.format(self.stock)
 
 class estado(models.Model):
     id = models.AutoField(primary_key=True)
@@ -62,39 +63,31 @@ class productos(models.Model):
     marca = models.ForeignKey(marca, null=True, blank=True, on_delete=models.CASCADE)
     proveedor = models.ForeignKey(proveedor, null=True, blank=True, on_delete=models.CASCADE)
 
+    def __str__(self):
+        return '{}'.format(self.nombre)
+
+
+
+
 class venta(models.Model):
-    codigo = models.CharField(max_length=10, unique=True)
     fecha = models.DateField()
     cliente = models.ForeignKey(Cliente, null=True, blank=True, on_delete=models.CASCADE)
-    total = models.IntegerField(max_length=100)
+    producto = models.ManyToManyField(productos)
+    cantidad = models.IntegerField(max_length=100)
 
 
 class detalle_venta(models.Model):
     id = models.AutoField(primary_key=True)
     venta = models.ForeignKey(venta, null=True, on_delete=models.SET_NULL)
-    productos = models.ForeignKey(productos, null=True, on_delete=models.SET_NULL)
+    producto = models.ManyToManyField(productos)
     cantidad = models.IntegerField(max_length=10000)
-"""
-    def precioventa(self):
-        return (self.productos.precio)
 
-    def total_venta(self):
-        total=(self.productos.precio*self.cantidad)
-        return total
+class Compra(models.Model):
+    proveedor = models.ForeignKey(proveedor, null=True, on_delete=models.SET_NULL)
+    fecha = models.DateTimeField(auto_now_add=True)
+    total = models.FloatField(max_length=100)
 
-    def totalf(self):
-        detalles = detalle_venta.objects.filter(productos=self.pk)
-        total = 1
-        for detalle in detalles:
-            suma = self.productos.precio*self.cantidad
-            total = total +suma
-            return total
-
-    def __str__(self):
-        return self.productos.nombre
-
-def update_stock(sender, instace, **kwargs):
-    instance.productos.stock -= instance.cantidad
-    instance.productos.save()
-
-signals.post_save.connect(update_stock, sender=detalle_venta, dispatch_uid="update_stock_count")"""
+class DetalleCompra(models.Model):
+    producto = models.ForeignKey(productos, null=True, on_delete=models.SET_NULL)
+    cantidad = models.IntegerField(max_length=10000)
+    precio_compra = models.DecimalField(max_digits=5,decimal_places=2)

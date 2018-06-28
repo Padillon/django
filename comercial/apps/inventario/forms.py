@@ -1,5 +1,8 @@
 from django import forms
 from apps.inventario.models import *
+from django.contrib.admin.widgets import AdminDateWidget
+from django.forms.fields import DateField
+from django.forms.models import inlineformset_factory
 #productos
 class ClienteForm(forms.ModelForm):
 
@@ -123,4 +126,73 @@ class categoriaForm(forms.ModelForm):
                                              'placeholder':"Nombre de la categoria"}),
             'descripcion': forms.TextInput(attrs={'class':'form-control',
                                                   'placeholder':"Descripcion de la categoria"}),
+        }
+
+#venta
+class VentaForm(forms.ModelForm):
+    class Meta:
+        model = venta
+        fields = [
+            'fecha',
+            'cliente',
+            'producto',
+            'cantidad',
+        ]
+
+        labels = {
+            'fecha':'Fecha',
+            'cliente':'Cliente',
+            'producto':'Producto',
+            'cantidad':'Cantidad',
+        }
+
+        widgets = {
+            'fecha': forms.TextInput(attrs={'class':'form-control',
+                                             'placeholder':"total"}),
+            'cliente': forms.Select(attrs={'class':'form-control',
+                                            'placeholder':"cliente"}),
+            'producto': forms.Select(attrs={'class':'form-control',
+                                             'placeholder':"producto"}),
+            'cantidad': forms.TextInput(attrs={'class':'form-control',
+                                             'placeholder':"cantidad"}),
+        }
+
+
+class CompraForm(forms.ModelForm):
+
+    class Meta:
+        model = Compra
+        fields = ['proveedor']
+
+    def __init__(self, *args, **kwargs):
+        super(CompraForm, self).__init__(*args, **kwargs)
+        for field in iter(self.fields):
+            self.fields[field].widget.attrs.update({
+                'class': 'form-control'
+            })
+
+
+class DetalleCompraForm(forms.ModelForm):
+
+    class Meta:
+        model = DetalleCompra
+        fields = [
+            'producto',
+            'cantidad',
+            'precio_compra',
+        ]
+
+        labels = {
+            'producto':'Producto',
+            'cantidad':'Cantidad',
+            'precio_compra':'Precio',
+        }
+
+        widgets = {
+            'producto': forms.Select(attrs={'class':'form-control',
+                                             'placeholder':"producto"}),
+            'cantidad': forms.TextInput(attrs={'class':'form-control',
+                                             'placeholder':"cantidad"}),
+            'precio_compra': forms.TextInput(attrs={'class':'form-control',
+                                             'placeholder':"cantidad"}),
         }

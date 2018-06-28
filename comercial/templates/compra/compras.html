@@ -7,22 +7,24 @@
            <div class="col-md-12">
                <!--breadcrumbs start -->
                <ul class="breadcrumb">
-                   <li><a href="#">Almacen</a>
+                   <li><a href="#">Inventario</a>
                    </li>
-                   <li>ventas</li>
+                   <li>Compras</li>
                    <li class="active">Lista</li>
                </ul>
                <!--breadcrumbs end -->
-              <h1 class="h1">Ventas</h1>
+              <h1 class="h1">Compras</h1>
            </div>
 
 
       </div>
-      <div class="col-md-offset-11">
-          <a class="btn btn-primary" onclick="return abrir_modal('{% url 'comercial:crear_venta'%}')">
-            <i class="fa fa-plus"></i> Nuevo</a>
+      <div class="row">
+        <div class="col-md-offset-11">
+                <a onclick="return abrir_modal('{% url 'comercial:crear_compra' %}')" class="btn btn-primary">
+                      <i class="fa fa-plus"></i>Compra
+                </a>
+        </div>
       </div>
-
 
    <div class="row">
            <div class="col-md-12">
@@ -39,35 +41,35 @@
                      <thead>
                    		<tr>
                    			<td>#</td>
-                   			<td>Codigo</td>
+                   			<td>Proveedor</td>
                    			<td>Fecha</td>
-                        <td>Cliente</td>
-                   			<td>Total</td>
+                        <td>Acciones</td>
                    		</tr>
                    	</thead>
                     <tbody>
-                  		{% if object_list %}
-                  		{% for venta in object_list %}
+                      {% if object_list %}
+                      {% for compra in object_list %}
                   		<tr>
-                  			<td>{{ venta.codigo }}</td>
-                  			<td>{{ venta.fecha }}</td>
-                  			<td>{{ venta.cliente }}</td>
-                        <td>{{ venta.total }}</td>
-                  			<td>
-                  				<a class="btn btn-success btn-trans">Ver</a>
-                  				<a class="btn btn-warning btn-trans">Editar</a>
-                  				<a class="btn btn-danger btn-trans" >Eliminar</a>
-                  			</td>
+                  			<td>{{ compra.id }}</td>
+                        <td>{{ compra.proveedor.nombre }}</td>
+                  			<td>{{ compra.fecha }}</td>
+                        <td class="text-center">
+                       <a onclick="return abrir_modal('{% url 'comercial:detalle_cliente' Cliente.pk %}')" class="btn btn-success btn-trans" > Ver </a>
+                       <a onclick="return abrir_modal('{% url 'comercial:modificar_cliente' Cliente.pk %}')" class="btn btn-warning btn-trans">Editar</a>
+                       <a onclick="return abrir_modal('{% url 'comercial:eliminar_cliente' Cliente.pk %}')" class="btn btn-danger btn-trans">Eliminar</a>
+
+                   </td>
                   		</tr>
                   		{% endfor %}
 
                   		{% else %}
-                  		<h1>No hay registros de ventas</h1>
+                  		<h1>No hay registros de compras</h1>
                   		{% endif %}
                   	</tbody>
                   </table>
                   <div id="popup" class="modal fade" role="dialog">
-                 </div>
+
+            </div>
                 </div>
               </div>
             </div>
