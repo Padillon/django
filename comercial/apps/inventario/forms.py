@@ -133,7 +133,6 @@ class VentaForm(forms.ModelForm):
     class Meta:
         model = venta
         fields = [
-            'fecha',
             'cliente',
             'producto',
             'cantidad',
@@ -147,8 +146,6 @@ class VentaForm(forms.ModelForm):
         }
 
         widgets = {
-            'fecha': forms.TextInput(attrs={'class':'form-control',
-                                             'placeholder':"total"}),
             'cliente': forms.Select(attrs={'class':'form-control',
                                             'placeholder':"cliente"}),
             'producto': forms.Select(attrs={'class':'form-control',
@@ -157,19 +154,6 @@ class VentaForm(forms.ModelForm):
                                              'placeholder':"cantidad"}),
         }
 
-
-class CompraForm(forms.ModelForm):
-
-    class Meta:
-        model = Compra
-        fields = ['proveedor']
-
-    def __init__(self, *args, **kwargs):
-        super(CompraForm, self).__init__(*args, **kwargs)
-        for field in iter(self.fields):
-            self.fields[field].widget.attrs.update({
-                'class': 'form-control'
-            })
 
 
 class DetalleCompraForm(forms.ModelForm):

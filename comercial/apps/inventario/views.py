@@ -169,13 +169,27 @@ def CrearCompra(request):
         form = DetalleCompraForm(request.POST)
 
         if form.is_valid():
-            form.save()
+            #guardamos el registro
+            obj=form.save()
+            #actualizamos el total
+            precio_compra = float(request.POST['precio_compra'])
+            stock_mas = float (request.POST['cantidad'])
+            comp = DetalleCompra.objects.get(pk=obj.id)
+            total_compra = precio_compra * stock_mas
+            comp.total = total_compra
+            comp.save()
+            #actualizamos el stock
+            stock_mas = int(stock_mas)
             prod = productos.objects.get(pk=request.POST['producto'])
             s = int(prod.stock)
-            stock_mas = int (request.POST['cantidad'])
             total = s+stock_mas
             prod.stock = total
             prod.save()
+            #creamos el registro de compra
+            compra = Compra()
+            compra.proveedor = obj.proveedor
+            compra.total = total_compra
+            compra.save()    
         return redirect("comercial:listado_compras")
     else:
         form = DetalleCompraForm()

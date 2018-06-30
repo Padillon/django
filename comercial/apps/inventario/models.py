@@ -70,7 +70,7 @@ class productos(models.Model):
 
 
 class venta(models.Model):
-    fecha = models.DateField()
+    fecha = models.DateField(auto_now_add=True)
     cliente = models.ForeignKey(Cliente, null=True, blank=True, on_delete=models.CASCADE)
     producto = models.ManyToManyField(productos)
     cantidad = models.IntegerField(max_length=100)
@@ -84,7 +84,7 @@ class detalle_venta(models.Model):
 
 class Compra(models.Model):
     proveedor = models.ForeignKey(proveedor, null=True, on_delete=models.SET_NULL)
-    fecha = models.DateField()
+    fecha = models.DateField(auto_now_add=True)
     total = models.FloatField(max_length=100)
 
 class DetalleCompra(models.Model):
@@ -92,5 +92,5 @@ class DetalleCompra(models.Model):
     producto = models.ForeignKey(productos, null=True, on_delete=models.SET_NULL)
     cantidad = models.IntegerField(max_length=10000)
     precio_compra = models.DecimalField(max_digits=5,decimal_places=2)
-    total = models.FloatField(max_length=100)
-    fecha = models.DateField()
+    total = models.FloatField(max_length=100,default=0.0)
+    fecha = models.DateField(auto_now_add=True)
