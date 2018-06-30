@@ -7,6 +7,7 @@ from apps.inventario.models import *
 from django.template import RequestContext
 from django.shortcuts import render_to_response
 from django.contrib.auth import authenticate, login
+import json
 
 class ListadoClientes(ListView):
     model = Cliente
@@ -135,13 +136,13 @@ class EliminarCategoria(DeleteView):
     model = categoria
     template_name = 'categoria/eliminar_categoria.html'
     success_url = reverse_lazy('comercial:categoria')
+
 #ventas
 class ventas_list(ListView):
     model = venta
     template_name = 'venta/venta_list.html'
 
 def CrearVenta(request):
-    producto = productos.objects.all()
     ventas = venta.objects.all()
     d_ventas = detalle_venta.objects.all()
     Clientes = Cliente.objects.all()
@@ -149,8 +150,19 @@ def CrearVenta(request):
     return render(
         request,
         'venta/crearVenta.html',
-        context={'prod':producto,'venta':ventas,'d_venta':d_ventas,'client':Clientes},
+        context={'venta':ventas,'d_venta':d_ventas,'client':Clientes},
         )
+
+def buscar_producto(request):
+    valor = request.GET.get()
+    busquedaProducto = productos.objects.filter(nombre = valor)
+    busquedaProducto = [productos_info(producto) for producto in busquedaProducto]
+    print(busquedaProducto)
+    return HttpResponse('venta/crearVenta.html',busquedaProducto, content_type= 'application/json')
+
+def productos_info(producto):
+    return productos.id+"*"+productos.codigo+"*"+productos.nombre+"*"+productos.precio
+
 def venta(request):
     if request.method == "POST":
         form = VentaForm(request.POST)
@@ -166,6 +178,7 @@ class ListadoCompra(ListView):
     model = Compra
     template_name = 'compra/compras.html'
     #context_object_name = 'compras'
+
 
 def CrearCompra(request):
     if request.method == "POST":

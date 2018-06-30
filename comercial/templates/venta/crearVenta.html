@@ -1,34 +1,97 @@
-<div class="modal-dialog modal-lg">
-        <div class="modal-content">
-                {% if object %}
-                <form role="form" action="{% url 'comercial:modificar_productos' object.pk %}" method="post">
-                  <div class="modal-header">
-                  <button type="button" class="close" data-dismiss="modal">x</button>
-                  <h3>Modificar producto.</h3>
-                {% else %}
-                <form role="form" action="{% url 'comercial:crear_venta' %}" method="post">
-                  <div class="modal-header">
-                  <button type="button" class="close" data-dismiss="modal">x</button>
-                  <h3>Agregar venta.</h3>
-                {% endif %}
+ {% extends 'base/base.html' %}
+ {% csrf_token %}
+ {% block content %}
+<section class="main-content-wrapper">
+            <section id="main-content">
+                <div class="row">
+                    <div class="col-md-12">
+                        <!--breadcrumbs start -->
+                        <ul class="breadcrumb">
+                            <li><a href="#">Dashboard</a>
+                            </li>
+                            <li>Ventas </li>
+                            <li class="active">Agregar Venta</li>
+                        </ul>
 
+ 
+ <h1 class="">Ventas</h1>
+ 
+
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+   
+    <!-- Main content -->
+
+    <div class="panel panel-default">
+    <div class="panel-heading">
+        <h3 class="panel-title">Datos</h3>
+                                
+    </div>
+    <div class="panel-body">
+<div class="content-wrapper">
+<div class="col-md-12">
+    <div class="panel panel-default">
+    <section class="content">
+        <!-- Default box -->
+        <div class="box box-solid">
+            <div class="box-body">
+                <div class="row">
+                        <div class="col-md-12">
+
+                        <form action=" " method="POST" class="form-horizontal">
+                            <div class="form-group">
+                                 {{ form.as_p }}
+                            </div><!-- /input-group -->
+                            </div> 
+                                
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-6">
+                                    <label for="">Producto:</label>
+                                    <input type="text" class="form-control" id="producto" name="valor">
+                                </div>
+                                <div class="col-md-2">
+                                    <label for="">&nbsp;</label>
+                                    <button id="btn-agregar-producto" type="button" class="btn btn-success btn-flat btn-block"><span class="fa fa-plus"></span> Agregar</button>
+                                </div>
+                            </div>
+                            <table id="tbventas" class="table table-bordered table-striped table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Codigo</th>
+                                        <th>Nombre</th>
+                                        <th>Precio</th>
+                                        <th>Cantidad</th>
+                                        <th>Importe</th>
+                                         <th>Eliminar</th>
+                                        
+                                    </tr>
+                                    
+                                </thead>
+                                <tbody>
+                                
+                                </tbody>
+                            </table>
+
+                            
+                            
+                            <div class="form-group">
+                                <div class="col-md-12">
+                                    <button type="submit" class="btn btn-success btn-flat">Guardar</button>
+                                </div>
+                                
+                            </div>
+                        </form>
+                        </div></div></div></div>
+                    </div>
+                </div>
             </div>
-            <div class="modal-body">
-                                {% csrf_token %}
-                                <div class="panel panel-default">
-                                        <div class="panel-body">
-                                                {{ form.as_p }}
-                                        </div>
-                                </div>
-                        </div>
-                        <div class="modal-footer">
-                                <div class="col-lg-12 text-right">
-                                        <input type="submit" class="btn btn-primary" name="submit" value="Guardar">
-                                        <button type="button" class="btn btn-default" onclick="return cerrar_modal()">
-                                                Cancelar
-                                        </button>
-                                </div>
-                        </div>
-                </form>
+            <!-- /.box-body -->
         </div>
+        <!-- /.box -->
+    </section>
+    <!-- /.content -->
 </div>
+<!-- /.content-wrapper -->
+{% endblock %}

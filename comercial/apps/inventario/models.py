@@ -66,21 +66,18 @@ class productos(models.Model):
     def __str__(self):
         return '{}'.format(self.nombre)
 
-
-
-
 class venta(models.Model):
+    id = models.AutoField(primary_key=True)
     fecha = models.DateField()
     cliente = models.ForeignKey(Cliente, null=True, blank=True, on_delete=models.CASCADE)
-    producto = models.ManyToManyField(productos)
-    cantidad = models.IntegerField(max_length=100)
-
+    total = models.DecimalField(max_digits=5,decimal_places=2, null=True)
 
 class detalle_venta(models.Model):
     id = models.AutoField(primary_key=True)
     venta = models.ForeignKey(venta, null=True, on_delete=models.SET_NULL)
-    producto = models.ManyToManyField(productos)
+    producto = models.ForeignKey(productos, null=True, on_delete=models.SET_NULL)
     cantidad = models.IntegerField(max_length=10000)
+    subtotal = models.DecimalField(max_digits=5,decimal_places=2, null=True)
 
 class Compra(models.Model):
     proveedor = models.ForeignKey(proveedor, null=True, on_delete=models.SET_NULL)
@@ -91,6 +88,6 @@ class DetalleCompra(models.Model):
     proveedor = models.ForeignKey(proveedor, null=True, on_delete=models.SET_NULL)
     producto = models.ForeignKey(productos, null=True, on_delete=models.SET_NULL)
     cantidad = models.IntegerField(max_length=10000)
-    precio_compra = models.DecimalField(max_digits=5,decimal_places=2)
+    precio_compra = models.DecimalField(max_digits=5,decimal_places=2, null=True)
     total = models.FloatField(max_length=100)
     #fecha = models.DateField()
