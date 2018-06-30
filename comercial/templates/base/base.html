@@ -190,12 +190,12 @@ function cerrar_modal2()
 </script>
 <script>
 
-    $("#producto").autocomplete({
+    /*$("#producto").autocomplete({
         minLength:3,
         source: function(req, add){
             var search=$("#producto").val();
                 $.ajax({
-                   // url:'/buscar_producto/',
+                   url:'/buscar_producto/',
                     async:false,
                     dataType:'json',
                     type:'GET',
@@ -214,9 +214,28 @@ function cerrar_modal2()
                     }
                 });
             }
-        });
+        });*/
 
     
+    $("#producto").autocomplete({
+        source: function(request, response){
+            var search=$("#producto").val();
+            $.ajax({
+                url:'/buscar_producto/',
+                type: "GET",
+                dataType: "json",
+                data:{ 'start': search,},
+                success: function(data){
+                    response(data);
+                }
+            });
+        }, //indica la informacion a mostrar al momento de comenzar a llenar el campo
+        minLength:2, //caracteres que activan el autocomplete
+        select: function(event, ui){
+            data = ui.item.id + "*" + ui.item.codigo + "*" + ui.item.label + "*" + ui.item.precio + "*" + ui.item.stock+ "*" + ui.item.precio + "*" + ui.item.precio2+ "*" + ui.item.precio3;
+            $("#btn-agregar").val(data);
+        }, 
+    });
 
 </script>
 

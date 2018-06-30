@@ -157,24 +157,15 @@ def buscar_producto(request):
     if request.is_ajax:
         search=request.GET.get('start','')
 
-        productos=productos.objects.filter(name__icontains=search)
-        
-        results=[]
-        for producto in productos:
-            product_json={}
-            product_json['id']=producto.id
-            product_json['nombre']=producto.nombre
-            results.append(product_json)
+        productosInfo=productos.objects.filter(nombre__icontains=search)
 
-        data_json=json.dumps(results)
-
+        data_json=json.dumps(productosInfo)
+        print(productosInfo)
     else:
         data_json='fail'
     mimetype="application/json"
     return HttpResponse(data_json,mimetype)
 
-def productos_info(producto):
-    return productos.id+"*"+productos.codigo+"*"+productos.nombre+"*"+productos.precio
 
 def venta(request):
     if request.method == "POST":
