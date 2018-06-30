@@ -133,25 +133,24 @@ class VentaForm(forms.ModelForm):
     class Meta:
         model = venta
         fields = [
+            'id',
+            'fecha',
             'cliente',
-            'producto',
-            'cantidad',
+            'total'
         ]
 
         labels = {
+            'id':'Factura #',
             'fecha':'Fecha',
             'cliente':'Cliente',
-            'producto':'Producto',
-            'cantidad':'Cantidad',
+            'total':'Total'
         }
 
         widgets = {
-            'cliente': forms.Select(attrs={'class':'form-control',
-                                            'placeholder':"cliente"}),
-            'producto': forms.Select(attrs={'class':'form-control',
-                                             'placeholder':"producto"}),
-            'cantidad': forms.TextInput(attrs={'class':'form-control',
-                                             'placeholder':"cantidad"}),
+            'id': forms.TextInput(attrs={'class':'form-control', 'readonly':'readonly'}),
+            'fecha': forms.TextInput(attrs={'class':'form-control', 'placeholder':"fecha"}),
+            'cliente': forms.Select(attrs={'class':'form-control', 'placeholder':"cliente"}),
+            'total': forms.TextInput(attrs={'class':'form-control', 'readonly':'readonly', 'placeholder':"total"})
         }
 
 
@@ -184,3 +183,7 @@ class DetalleCompraForm(forms.ModelForm):
             'precio_compra': forms.TextInput(attrs={'class':'form-control',
                                              'placeholder':"cantidad"}),
         }
+
+class LoginForm(forms.Form):
+    username = forms.CharField()
+    password = forms.CharField(widget=forms.PasswordInput())

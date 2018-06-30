@@ -15,6 +15,9 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import include, path
+from django.contrib.auth.views import login
+from django.conf.urls import url
+from apps.inventario import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -27,5 +30,7 @@ urlpatterns = [
     path('clientes/', include('apps.inventario.urls', namespace='cliente')),
     path('vender/', include('apps.inventario.urls', namespace='vender')),
     path('compras/', include('apps.inventario.urls', namespace='compra')),
+    url(r'^$', login, {'template_name':'index.html'}, name='login'),
+    url(r'^buscar_producto/$',views.buscar_producto)
 
 ]

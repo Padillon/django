@@ -36,13 +36,14 @@ urlpatterns = [
     path('modificar_cliente/(?P<pk>.+)/$',ModificarCliente.as_view(), name="modificar_cliente"),
     path('detalle_cliente/(?P<pk>.+)/$',DetalleCliente.as_view(), name="detalle_cliente"),
     path('eliminar_cliente/(?P<pk>.+)/$',EliminarCliente.as_view(), name="eliminar_cliente"),
+    
     #ventas
     path('vender/',ventas_list.as_view(), name="venta_list"),
-    #path('nueva_venta/',CrearVenta, name="crear_ventasss"),
     path('nueva_venta/',venta, name="crear_venta"),
 
     #compras
     path('compras/',ListadoCompra.as_view(), name="listado_compras"),
     path('crear_compra/',CrearCompra, name="crear_compra"),
+
 
 ]

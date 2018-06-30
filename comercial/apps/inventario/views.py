@@ -4,6 +4,10 @@ from django.urls import reverse_lazy
 from django.views.generic import CreateView,UpdateView,ListView,DetailView,DeleteView
 from apps.inventario.forms import *
 from apps.inventario.models import *
+from django.template import RequestContext
+from django.shortcuts import render_to_response
+from django.contrib.auth import authenticate, login
+import json
 
 class ListadoClientes(ListView):
     model = Cliente
@@ -132,13 +136,13 @@ class EliminarCategoria(DeleteView):
     model = categoria
     template_name = 'categoria/eliminar_categoria.html'
     success_url = reverse_lazy('comercial:categoria')
+
 #ventas
 class ventas_list(ListView):
     model = venta
     template_name = 'venta/venta_list.html'
 
 def CrearVenta(request):
-    producto = productos.objects.all()
     ventas = venta.objects.all()
     d_ventas = detalle_venta.objects.all()
     Clientes = Cliente.objects.all()
@@ -146,8 +150,23 @@ def CrearVenta(request):
     return render(
         request,
         'venta/crearVenta.html',
-        context={'prod':producto,'venta':ventas,'d_venta':d_ventas,'client':Clientes},
+        context={'venta':ventas,'d_venta':d_ventas,'client':Clientes},
         )
+
+def buscar_producto(request):
+    if request.is_ajax:
+        search=request.GET.get('start','')
+
+        productosInfo=productos.objects.filter(nombre__icontains=search)
+
+        data_json=json.dumps(productosInfo)
+        print(productosInfo)
+    else:
+        data_json='fail'
+    mimetype="application/json"
+    return HttpResponse(data_json,mimetype)
+
+
 def venta(request):
     if request.method == "POST":
         form = VentaForm(request.POST)
@@ -163,6 +182,7 @@ class ListadoCompra(ListView):
     model = Compra
     template_name = 'compra/compras.html'
     #context_object_name = 'compras'
+
 
 def CrearCompra(request):
     if request.method == "POST":
@@ -194,3 +214,24 @@ def CrearCompra(request):
     else:
         form = DetalleCompraForm()
     return render(request, 'compra/compra.html',{'form':form})
+
+def login_page(request):
+    message = None
+    if request.method == "POST":
+        form = LoginForm(request.POST)
+        if form.is_valid():
+            username = request.POST['username']
+            password = request.POST['password']
+            user = authenticate(username=username, password=password)
+            if user is not None:
+                if user.is_active:
+                    login(request, user)
+                    message ="Bienvenido ingeniero"
+                else:
+                    message = "Tu usuario esta inactivo"
+            else:
+                message = "Nel prro no estas registrado"
+    else:
+        form = LoginForm()
+    return render_to_response('index.htm',{'message':message,'form':form,'user':username},
+                            context_instance=RequestContext(request))
