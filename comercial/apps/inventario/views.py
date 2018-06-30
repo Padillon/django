@@ -154,11 +154,24 @@ def CrearVenta(request):
         )
 
 def buscar_producto(request):
-    valor = request.GET.get()
-    busquedaProducto = productos.objects.filter(nombre = valor)
-    busquedaProducto = [productos_info(producto) for producto in busquedaProducto]
-    print(busquedaProducto)
-    return HttpResponse('venta/crearVenta.html',busquedaProducto, content_type= 'application/json')
+    if request.is_ajax:
+        search=request.GET.get('start','')
+
+        productos=productos.objects.filter(name__icontains=search)
+        
+        results=[]
+        for producto in productos:
+            product_json={}
+            product_json['id']=producto.id
+            product_json['nombre']=producto.nombre
+            results.append(product_json)
+
+        data_json=json.dumps(results)
+
+    else:
+        data_json='fail'
+    mimetype="application/json"
+    return HttpResponse(data_json,mimetype)
 
 def productos_info(producto):
     return productos.id+"*"+productos.codigo+"*"+productos.nombre+"*"+productos.precio

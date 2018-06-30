@@ -187,66 +187,35 @@ function cerrar_modal2()
 </script>
 <script>
 
-$("#btn-agregar-producto").on("click", function(){
-        data = $(this).val();
-        if (data != " "){
-            infoProducto = data.split("*");
-            var codigo;
-            var stock;
-                if (infoProducto[1] == "undefined"){
-                    codigo = 0;
-                    stock = 0;
-                } else {
-                    codigo =  infoProducto[1];
-                    stock = infoProducto[4];
-                }
-                varx++;
-                vary = 0;
-                html = "<tr>";
-                html += "<td><input type='hidden' name='idProductos[]' value='"+infoProducto[0]+"'>"+codigo+"</td>"; //id y codigo
-                html += "<td><input type='hidden' name='nombreProductos[]' value='"+infoProducto[2]+"'>"+infoProducto[2]+"</td>"; //nombre
-                html += "<td><input type='hidden' name='precios[]' value='"+infoProducto[3]+"'><p>"+infoProducto[3]+"</p></td>"; //precios
-                vary++;
-                html += "<td>"+stock+"</td>";//stock
-                html += "<td><input type='number' placeholder='Ingrese numero entero' name='cantidades[]' values='1' class='cantidades'></td>"; //cantidades
-               
-                html += "<td><input  type='hidden' name='importes[]' value='"+infoProducto[3]+"'><p>"+infoProducto[3]+"</p></td>"; //immportes
-                html += "<td><button type='button' class='btn btn-danger btn-remove-producto'><span class='fa fa-times' style='color: #fff'></span></button></td>";
-                html += "<td ><input   type='hidden' id='"+infoProducto[2]+"' value='"+infoProducto[5]+"*"+infoProducto[6]+"*"+infoProducto[7] +"'></td>"; //immportes
-                html += "</tr>";
-                $("#tbventas tbody").append(html);
-                sumar();
-               // $("#btn-agregar").val(null);
-               // $("#producto").val(null);
-        } else {
-            alert("seleccione un producto");
-        }
-    });
+    $("#producto").autocomplete({
+        minLength:3,
+        source: function(req, add){
+            var search=$("#producto").val();
+                $.ajax({
+                   // url:'/buscar_producto/',
+                    async:false,
+                    dataType:'json',
+                    type:'GET',
+                    data:{ 'start': search,},
+                    success: function(data){
+                        var suggestions=[];
 
-$("#producto").autocomplete({
-        source: function(request, response){
-            $.ajax({
-                url: {% url 'comercial:buscar_producto' %},
-                type: "GET",
-                dataType: "json",
-                data:{ valor: request.term},
-                success: function(data){
-                    response(data);
-                }
-            });
-        }, //indica la informacion a mostrar al momento de comenzar a llenar el campo
-        minLength:2, //caracteres que activan el autocomplete
-        select: function(event, ui){
-            data = ui.item.id + "*" + ui.item.codigo + "*" + ui.item.label + "*" + ui.item.precio + "*" + ui.item.stock+ "*" + ui.item.precio + "*" + ui.item.precio2+ "*" + ui.item.precio3;
-            $("#btn-agregar").val(data);
-        }, 
-    });
-    
+                        $.each(data, function(index, objeto){
+                            suggestions.push(objeto.nombre); 
+                        });
+
+                        add(suggestions);
+                        },
+                    error:function(err){
+                        alert("error");
+                    }
+                });
+            }
+        });
+
     
 
-
-
-      </script>
+</script>
 
     	{% endblock %}
       {% endblock %}
