@@ -1,14 +1,27 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse
 from django.urls import reverse_lazy
-from django.views.generic import CreateView,UpdateView,ListView,DetailView,DeleteView
+from django.views.generic import CreateView,UpdateView,ListView,DetailView,DeleteView,View
 from apps.inventario.forms import *
 from apps.inventario.models import *
 from django.template import RequestContext
 from django.shortcuts import render_to_response
 from django.contrib.auth import authenticate, login
 import json
+from django.conf import settings
+from io import BytesIO
+from reportlab.pdfgen import canvas
+from reportlab.platypus import SimpleDocTemplate, Table, TableStyle
+from reportlab.lib.units import cm
+from reportlab.lib import colors
+from reportlab.lib.pagesizes import landscape, letter
 
+#inventario
+class ListadoInventario(ListView):
+    model = productos
+    template_name ="inventario/inventario_list.html"
+
+#clientes
 class ListadoClientes(ListView):
     model = Cliente
     template_name ="cliente/clientes.html"
@@ -221,3 +234,122 @@ def login_page(request):
         form = LoginForm()
     return render_to_response('index.htm',{'message':message,'form':form,'user':username},
                             context_instance=RequestContext(request))
+
+class ReporteProductosPDF(View):
+
+    def cabecera(self,pdf):
+            #Utilizamos el archivo logo_django.png que está guardado en la carpeta media/imagenes
+            archivo_imagen = settings.MEDIA_ROOT+'/imagenes/logo.jpg'
+            #Definimos el tamaño de la imagen a cargar y las coordenadas correspondientes
+            pdf.drawImage(archivo_imagen, 40, 520, 120, 90,preserveAspectRatio=True)
+            #Establecemos el tamaño de letra en 16 y el tipo de letra Helvetica
+            pdf.setFont("Helvetica", 16)
+            #Dibujamos una cadena en la ubicación X,Y especificada
+            pdf.drawString(150, 570, u"Comercial Jovany S.A.")
+            pdf.setFont("Helvetica", 14)
+            pdf.drawString(151, 555, u"Vengase aquí primero")
+            pdf.setFont("Helvetica", 12)
+            pdf.drawString(300, 510, u"Reporte general de Productos")
+
+    def tabla(self,pdf,y):
+        #Creamos una tupla de encabezados para neustra tabla
+        encabezados = ('N°', 'Codigo', 'Nombre', 'Descripcion','Stock','Stock Minimo','Estado','marca','Categoria','Proveedor')
+        #Creamos una lista de tuplas que van a contener a las personas
+        detalles = [(prod.id,prod.codigo,prod.nombre,prod.descripcion,prod.stock,prod.stock_min,prod.estado.nombre,prod.marca.nombre,prod.categoria.nombre,prod.proveedor.nombre) for prod in productos.objects.all()]
+        #Establecemos el tamaño de cada una de las columnas de la tabla
+        detalle_orden = Table([encabezados] + detalles ,colWidths=[1 * cm, 2 * cm, 2.5 * cm, 4.5 * cm, 1.5 * cm, 2.5 * cm, 2 * cm, 3 * cm, 3 * cm, 3 * cm])
+        #Aplicamos estilos a las celdas de la tabla
+        detalle_orden.setStyle(TableStyle(
+            [
+                #La primera fila(encabezados) va a estar centrada
+                ('ALIGN',(0,0),(3,0),'CENTER'),
+                #Los bordes de todas las celdas serán de color negro y con un grosor de 1
+                ('GRID', (0, 0), (-1, -1), 1, colors.black),
+                #El tamaño de las letras de cada una de las celdas será de 10
+                ('FONTSIZE', (0, 0), (-1, -1), 10),
+            ]
+        ))
+        #Establecemos el tamaño de la hoja que ocupará la tabla
+        detalle_orden.wrapOn(pdf, 800, 900)
+        #Definimos la coordenada donde se dibujará la tabla
+        detalle_orden.drawOn(pdf, 40,y)
+
+    def get(self, request, *args, **kwargs):
+            #Indicamos el tipo de contenido a devolver, en este caso un pdf
+        response = HttpResponse(content_type='application/pdf')
+        #La clase io.BytesIO permite tratar un array de bytes como un fichero binario, se utiliza como almacenamiento temporal
+        buffer = BytesIO()
+        #Canvas nos permite hacer el reporte con coordenadas X y Y
+        pdf = canvas.Canvas(buffer)
+        pdf.setTitle("Productos.pdf")
+        pdf.setPageSize( landscape(letter) )
+        #Llamo al método cabecera donde están definidos los datos que aparecen en la cabecera del reporte.
+        self.cabecera(pdf)
+        y = 400
+        self.tabla(pdf, y)
+        #Con show page hacemos un corte de página para pasar a la siguiente
+        pdf.showPage()
+        pdf.save()
+        pdf = buffer.getvalue()
+        buffer.close()
+        response.write(pdf)
+        return response
+
+class ReporteProductosBajosPDF(View):
+
+    def cabecera(self,pdf):
+            #Utilizamos el archivo logo_django.png que está guardado en la carpeta media/imagenes
+            archivo_imagen = settings.MEDIA_ROOT+'/imagenes/logo.jpg'
+            #Definimos el tamaño de la imagen a cargar y las coordenadas correspondientes
+            pdf.drawImage(archivo_imagen, 40, 520, 120, 90,preserveAspectRatio=True)
+            #Establecemos el tamaño de letra en 16 y el tipo de letra Helvetica
+            pdf.setFont("Helvetica", 16)
+            #Dibujamos una cadena en la ubicación X,Y especificada
+            pdf.drawString(150, 570, u"Comercial Jovany S.A.")
+            pdf.setFont("Helvetica", 14)
+            pdf.drawString(151, 555, u"Vengase aquí primero")
+            pdf.setFont("Helvetica", 12)
+            pdf.drawString(270, 510, u"Reporte general de productos bajos en stock")
+
+    def tabla(self,pdf,y):
+        #Creamos una tupla de encabezados para neustra tabla
+        encabezados = ('N°', 'Codigo', 'Nombre', 'Descripcion','Stock','Stock Minimo','Estado','marca','Categoria','Proveedor')
+        #Creamos una lista de tuplas que van a contener a las personas
+        detalles = [(prod.id,prod.codigo,prod.nombre,prod.descripcion,prod.stock,prod.stock_min,prod.estado.nombre,prod.marca.nombre,prod.categoria.nombre,prod.proveedor.nombre) for prod in productos.objects.all() if prod.stock <= prod.stock_min]
+        detalle_orden = Table([encabezados] + detalles ,colWidths=[1 * cm, 2 * cm, 2 * cm, 5 * cm, 1.5 * cm, 2.5 * cm, 2 * cm, 3 * cm, 3 * cm, 3 * cm])
+        #Aplicamos estilos a las celdas de la tabla
+        detalle_orden.setStyle(TableStyle(
+            [
+                #La primera fila(encabezados) va a estar centrada
+                ('ALIGN',(0,0),(3,0),'CENTER'),
+                #Los bordes de todas las celdas serán de color negro y con un grosor de 1
+                ('GRID', (0, 0), (-1, -1), 1, colors.black),
+                #El tamaño de las letras de cada una de las celdas será de 10
+                ('FONTSIZE', (0, 0), (-1, -1), 10),
+            ]
+        ))
+        #Establecemos el tamaño de la hoja que ocupará la tabla
+        detalle_orden.wrapOn(pdf, 800, 900)
+        #Definimos la coordenada donde se dibujará la tabla
+        detalle_orden.drawOn(pdf, 40,y)
+
+    def get(self, request, *args, **kwargs):
+        #Indicamos el tipo de contenido a devolver, en este caso un pdf
+        response = HttpResponse(content_type='application/pdf')
+        #La clase io.BytesIO permite tratar un array de bytes como un fichero binario, se utiliza como almacenamiento temporal
+        buffer = BytesIO()
+        #Canvas nos permite hacer el reporte con coordenadas X y Y
+        pdf = canvas.Canvas(buffer)
+        pdf.setTitle("Productos_Bajos.pdf")
+        pdf.setPageSize( landscape(letter) )
+        #Llamo al método cabecera donde están definidos los datos que aparecen en la cabecera del reporte.
+        self.cabecera(pdf)
+        y = 400
+        self.tabla(pdf, y)
+        #Con show page hacemos un corte de página para pasar a la siguiente
+        pdf.showPage()
+        pdf.save()
+        pdf = buffer.getvalue()
+        buffer.close()
+        response.write(pdf)
+        return response

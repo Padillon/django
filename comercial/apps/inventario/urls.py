@@ -36,7 +36,13 @@ urlpatterns = [
     path('modificar_cliente/(?P<pk>.+)/$',ModificarCliente.as_view(), name="modificar_cliente"),
     path('detalle_cliente/(?P<pk>.+)/$',DetalleCliente.as_view(), name="detalle_cliente"),
     path('eliminar_cliente/(?P<pk>.+)/$',EliminarCliente.as_view(), name="eliminar_cliente"),
-    
+    #inventario
+    path('inventario/',ListadoInventario.as_view(), name="inventario_list"),
+    path('reporte_de_porductos/',ReporteProductosPDF.as_view(), name="reporte_productos"),
+    path('reporte_de_porductos_bajo/',ReporteProductosBajosPDF.as_view(), name="reporte_productos_bajos"),
+
+
+
     #ventas
     path('vender/',ventas_list.as_view(), name="venta_list"),
     path('nueva_venta/',venta, name="crear_venta"),
