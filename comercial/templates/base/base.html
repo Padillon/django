@@ -217,7 +217,6 @@ function cerrar_modal2()
             }
         });*/
 
-
     $("#producto").autocomplete({
         source: function(request, response){
             var search=$("#producto").val();
@@ -225,15 +224,17 @@ function cerrar_modal2()
                 url:'/buscar_producto/',
                 type: "GET",
                 dataType: "json",
-                data:{ 'start': search,},
+                data:{ 'start': search},
                 success: function(data){
                     response(data);
-                    alert(data);
+                    //alert(data);
                 }
             });
         }, //indica la informacion a mostrar al momento de comenzar a llenar el campo
         minLength:2, //caracteres que activan el autocomplete
-
+        select: function(event, ui){
+            alert("hola");
+        }, 
     });
 
 </script>
