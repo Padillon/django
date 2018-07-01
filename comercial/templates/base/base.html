@@ -228,14 +228,12 @@ function cerrar_modal2()
                 data:{ 'start': search,},
                 success: function(data){
                     response(data);
+                    alert(data);
                 }
             });
         }, //indica la informacion a mostrar al momento de comenzar a llenar el campo
         minLength:2, //caracteres que activan el autocomplete
-        select: function(event, ui){
-            data = ui.item.id + "*" + ui.item.codigo + "*" + ui.item.label + "*" + ui.item.precio + "*" + ui.item.stock+ "*" + ui.item.precio;
-            $("#btn-agregar").val(data);
-        },
+
     });
 
 </script>

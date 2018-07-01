@@ -10,6 +10,7 @@ from django.contrib.auth import authenticate, login
 import json
 from django.conf import settings
 from io import BytesIO
+from django.core import serializers
 
 """from reportlab.pdfgen import canvas
 =======
@@ -175,12 +176,17 @@ def buscar_producto(request):
     if request.is_ajax:
         search=request.GET.get('start','')
         productosInfo=productos.objects.filter(nombre__icontains=search)
-        data_json=json.dumps(productosInfo)
-        print(productosInfo)
+        #data = [producto_data(producto) for producto in productosInfo]
+
+        data=serializers.serialize('json', productosInfo, fields=('id', 'codigo', 'nombre', 'precio', 'stock'))
+        print(data)
     else:
-        data_json='fail'
+        data='fail'
         mimetype="application/json"
-    return HttpResponse(data_json,mimetype)
+    return HttpResponse(data, content_type='application/json')
+
+def producto_data(data):
+    return {str(data.id) + "*" + str(data.codigo) + "*" + str(data.nombre) + "*" + str(data.precio) + "*" + str(data.stock)}
 
 
 def venta(request):
