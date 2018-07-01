@@ -10,7 +10,12 @@ from django.contrib.auth import authenticate, login
 import json
 from django.conf import settings
 from io import BytesIO
+
 """from reportlab.pdfgen import canvas
+=======
+import reportlab
+from reportlab.pdfgen import canvas
+>>>>>>> Stashed changes
 from reportlab.platypus import SimpleDocTemplate, Table, TableStyle
 from reportlab.lib.units import cm
 from reportlab.lib import colors
