@@ -10,11 +10,16 @@ from django.contrib.auth import authenticate, login
 import json
 from django.conf import settings
 from io import BytesIO
+
+"""from reportlab.pdfgen import canvas
+=======
+import reportlab
 from reportlab.pdfgen import canvas
+>>>>>>> Stashed changes
 from reportlab.platypus import SimpleDocTemplate, Table, TableStyle
 from reportlab.lib.units import cm
 from reportlab.lib import colors
-from reportlab.lib.pagesizes import landscape, letter
+from reportlab.lib.pagesizes import landscape, letter"""
 
 #inventario
 class ListadoInventario(ListView):
@@ -169,14 +174,12 @@ def CrearVenta(request):
 def buscar_producto(request):
     if request.is_ajax:
         search=request.GET.get('start','')
-
         productosInfo=productos.objects.filter(nombre__icontains=search)
-
         data_json=json.dumps(productosInfo)
         print(productosInfo)
     else:
         data_json='fail'
-    mimetype="application/json"
+        mimetype="application/json"
     return HttpResponse(data_json,mimetype)
 
 
@@ -251,7 +254,7 @@ def login_page(request):
 
 class ReporteProductosPDF(View):
 
-    def cabecera(self,pdf):
+    """def cabecera(self,pdf):
             #Utilizamos el archivo logo_django.png que está guardado en la carpeta media/imagenes
             archivo_imagen = settings.MEDIA_ROOT+'/imagenes/logo.jpg'
             #Definimos el tamaño de la imagen a cargar y las coordenadas correspondientes
@@ -307,11 +310,11 @@ class ReporteProductosPDF(View):
         pdf = buffer.getvalue()
         buffer.close()
         response.write(pdf)
-        return response
+        return response"""
 
 class ReporteProductosBajosPDF(View):
 
-    def cabecera(self,pdf):
+    """def cabecera(self,pdf):
             #Utilizamos el archivo logo_django.png que está guardado en la carpeta media/imagenes
             archivo_imagen = settings.MEDIA_ROOT+'/imagenes/logo.jpg'
             #Definimos el tamaño de la imagen a cargar y las coordenadas correspondientes
@@ -366,4 +369,4 @@ class ReporteProductosBajosPDF(View):
         pdf = buffer.getvalue()
         buffer.close()
         response.write(pdf)
-        return response
+        return response"""
