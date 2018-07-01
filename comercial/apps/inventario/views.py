@@ -176,17 +176,25 @@ def buscar_producto(request):
     if request.is_ajax:
         search=request.GET.get('start','')
         productosInfo=productos.objects.filter(nombre__icontains=search)
-        #data = [producto_data(producto) for producto in productosInfo]
 
-        data=serializers.serialize('json', productosInfo, fields=('id', 'codigo', 'nombre', 'precio', 'stock'))
-        print(data)
+        results=[]
+        for producto in productosInfo:
+            data={}
+            data['id'] = producto.id
+            data['codigo']= producto.codigo
+            data['precio']=producto.precio
+            data['label']=producto.nombre
+            data['value']=producto.nombre
+            data['stock']=producto.stock
+
+            results.append(data)
+
+        data_json=json.dumps(results)
+
     else:
-        data='fail'
-        mimetype="application/json"
-    return HttpResponse(data, content_type='application/json')
-
-def producto_data(data):
-    return {str(data.id) + "*" + str(data.codigo) + "*" + str(data.nombre) + "*" + str(data.precio) + "*" + str(data.stock)}
+        data_json='fail'
+    mimetype="application/json"
+    return HttpResponse(data_json,mimetype)
 
 
 def venta(request):

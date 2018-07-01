@@ -39,8 +39,9 @@
                 <div class="row">
                         <div class="col-md-12">
 
-                        <form action=" " method="POST" class="form-horizontal">
+                        <form action="" method="POST" class="form-horizontal">
                             <div class="form-group">
+                                {% csrf_token %}
                                  {{ form.as_p }}
                             </div><!-- /input-group -->
                             </div> 
@@ -62,6 +63,7 @@
                                         <th>Codigo</th>
                                         <th>Nombre</th>
                                         <th>Precio</th>
+                                        <th>Stock</th>
                                         <th>Cantidad</th>
                                         <th>Importe</th>
                                          <th>Eliminar</th>
