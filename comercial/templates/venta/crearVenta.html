@@ -1,5 +1,5 @@
  {% extends 'base/base.html' %}
- {% csrf_token %}
+ 
  {% block content %}
 <section class="main-content-wrapper">
             <section id="main-content">
@@ -39,7 +39,7 @@
                 <div class="row">
                         <div class="col-md-12">
 
-                        <form action="" method="POST" class="form-horizontal">
+                        <form action="{% url 'comercial:guardarVenta' %}" method="POST" class="form-horizontal">
                             <div class="form-group">
                                 {% csrf_token %}
                                  {{ form.as_p }}

@@ -199,10 +199,18 @@ def buscar_producto(request):
 
 def venta(request):
     if request.method == "POST":
-        form = VentaForm(request.POST)
+        form = VentaForm(request.POST or None)
+
         if form.is_valid():
-            form.save()
-        return redirect("comercial:venta_list")
+            #datos = form.cleaned_data
+            cliente = form.cleaned_data["cliente"]
+            nombreProductos = request.POST.get('nombreProductos', None)
+            print(cliente);
+            print(nombreProductos)
+            print(request.POST)
+
+            #form.save()
+        #return redirect("comercial:venta_list")
     else:
         form = VentaForm()
     return render(request, 'venta/crearVenta.html',{'form':form})
