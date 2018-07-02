@@ -10,7 +10,13 @@ from django.contrib.auth import authenticate, login
 import json
 from django.conf import settings
 from io import BytesIO
+from django.core import serializers
+
 """from reportlab.pdfgen import canvas
+=======
+import reportlab
+from reportlab.pdfgen import canvas
+>>>>>>> Stashed changes
 from reportlab.platypus import SimpleDocTemplate, Table, TableStyle
 from reportlab.lib.units import cm
 from reportlab.lib import colors
@@ -170,20 +176,41 @@ def buscar_producto(request):
     if request.is_ajax:
         search=request.GET.get('start','')
         productosInfo=productos.objects.filter(nombre__icontains=search)
-        data_json=json.dumps(productosInfo)
-        print(productosInfo)
+
+        results=[]
+        for producto in productosInfo:
+            data={}
+            data['id'] = producto.id
+            data['codigo']= producto.codigo
+            data['precio']=producto.precio
+            data['label']=producto.nombre
+            data['value']=producto.nombre
+            data['stock']=producto.stock
+
+            results.append(data)
+
+        data_json=json.dumps(results)
+
     else:
         data_json='fail'
-        mimetype="application/json"
+    mimetype="application/json"
     return HttpResponse(data_json,mimetype)
 
 
 def venta(request):
     if request.method == "POST":
-        form = VentaForm(request.POST)
+        form = VentaForm(request.POST or None)
+
         if form.is_valid():
-            form.save()
-        return redirect("comercial:venta_list")
+            #datos = form.cleaned_data
+            cliente = form.cleaned_data["cliente"]
+            nombreProductos = request.POST.get('nombreProductos', None)
+            print(cliente);
+            print(nombreProductos)
+            print(request.POST)
+
+            #form.save()
+        #return redirect("comercial:venta_list")
     else:
         form = VentaForm()
     return render(request, 'venta/crearVenta.html',{'form':form})

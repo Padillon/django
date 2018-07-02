@@ -46,6 +46,7 @@ urlpatterns = [
     #ventas
     path('vender/',ventas_list.as_view(), name="venta_list"),
     path('nueva_venta/',venta, name="crear_venta"),
+    path('venta/', venta, name="guardarVenta"),
 
     #compras
     path('compras/',ListadoCompra.as_view(), name="listado_compras"),
