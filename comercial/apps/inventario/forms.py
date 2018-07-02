@@ -148,7 +148,7 @@ class VentaForm(forms.ModelForm):
 
         widgets = {
             'id': forms.TextInput(attrs={'class':'form-control', 'readonly':'readonly'}),
-            'fecha': forms.TextInput(attrs={'class':'form-control', 'placeholder':"fecha", 'type':"date"}),
+            'fecha': forms.TextInput(attrs={'class':'col-md-3', 'placeholder':"fecha", 'type':"date"}),
             'cliente': forms.Select(attrs={'class':'form-control', 'placeholder':"cliente"}),
             'total': forms.TextInput(attrs={'class':'form-control', 'readonly':'readonly', 'placeholder':"total"})
         }
