@@ -10,14 +10,15 @@ from django.contrib.auth import authenticate, login, logout
 import json
 from django.conf import settings
 from io import BytesIO
-<<<<<<< HEAD
+#from .models import venta
+
 import datetime
-=======
+
 #alv veamos si no la riego
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 from django.core import serializers
->>>>>>> master
+
 
 """from reportlab.pdfgen import canvas
 =======
@@ -172,7 +173,7 @@ class EliminarCategoria(DeleteView):
 
 #ventas
 class ventas_list(ListView):
-    model = venta
+    model = Venta
     template_name = 'venta/venta_list.html'
 
 def CrearVenta(request):
@@ -213,7 +214,7 @@ def buscar_producto(request):
 
 def venta(request):
     #form = VentaForm()
-
+    red = 0
     if request.is_ajax:
         datos=request.GET.get('start', None)
         info = request.GET.get('info', None)
@@ -235,16 +236,15 @@ def venta(request):
             sdate = str(infoVenta.get(0))
             cliente = int(infoVenta.get(1))
             total = float(infoVenta.get(2))
-            #print(fecha)
+            print(sdate, cliente, total)
 
-            insertVenta = venta(fecha=sdate, cliente_id=cliente, total=total)
+            insertVenta = Venta(fecha=sdate, cliente_id=cliente, total=total)
             insertVenta.save()
-            fkVenta = venta.objects.latest('id')
-            print(fkVenta)
+            latestID = Venta.objects.latest('id')
+            print(latestID)
 
             detalle = datos.split("|")
             n = int(len(detalle))
-
             for i in range(n):
                 detProd = detalle[i].split(',')
                 
@@ -252,22 +252,21 @@ def venta(request):
                     diccionario[k] = detProd[k]
 
                 idProd = diccionario.get(0)
-                precio = diccionario.get(1)
-                cantidad = diccionario.get(2)
-                subtotal = diccionario.get(3)
-                stock = diccionario.get(4)
-
-                #insert = detalle_venta(id, precio, cantidad, subtotal, stock)
-                
-
-            #if form.is_valid():
-
-                #form.save()
-            #return redirect("comercial:venta_list")
+                if idProd != '':
+                    precioProd= float(diccionario.get(1))
+                    cantidad = int(diccionario.get(2))
+                    subtotal = float(diccionario.get(3))
+                    stock = int(diccionario.get(4))
+                    insertDetalle = detalle_venta(venta= latestID, producto_id=idProd, cantidad=cantidad, subtotal=subtotal)
+                    insertDetalle.save()
+            red = 1
         else:
             print("error")
             #form = VentaForm()
-    return render(request,'venta/crearVenta.html')
+    if red == 0:
+        return render(request, 'venta/crearVenta.html')
+    else:
+        return render(request, 'venta/venta_list.html')
 
 #compra
 class ListadoCompra(ListView):

@@ -255,7 +255,7 @@ function sumar(){
                 html += "<td><input type='hidden' class='precio' name='precios[]' value='"+precio+"'><p>"+precio+"</p></td>"; //precios
                 //vary++;
                 html += "<td class='stock'>"+stock+"</td>";//stock
-                html += "<td><input type='number' class='cantidades[]' placeholder='Ingrese numero entero' name='cantidades[]' value='1' class='cantidades'></td>"; //cantidades
+                html += "<td><input type='number'  class='cantidades' placeholder='Ingrese numero entero' name='cantidades[]' value='1'></td>"; //cantidades
 
                 html += "<td><input  type='hidden'class='subtotal' name='immporte[]' value='"+precio+"'><p>"+precio+"</p></td>"; //immportes
                 html += "<td><button type='button' class='btn btn-danger btn-remove-producto'><span class='fa fa-times' style='color: #fff'></span></button></td>";
@@ -298,7 +298,7 @@ function sumar(){
       $("#tbventas .read").each(function(){
           var id = $(this).find('.idp').val();
           var precio = $(this).find('.precio').val();
-          var cantidad = $(this).find('.cantidad').val();
+          var cantidad = $(this).find('.cantidades').val();
           var subtotal = $(this).find('.subtotal').val();
           var stock = $(this).find('.stock').text();
           datos+=id+","+precio+","+cantidad+","+subtotal+","+stock+"|";
