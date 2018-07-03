@@ -7,13 +7,13 @@
                            <div class="col-md-12">
                                <!--breadcrumbs start -->
                                <ul class="breadcrumb">
-                                   <li><a href="#">Inventario</a>
+                                   <li><a href="#">Venta</a>
                                    </li>
-                                   <li>Compras</li>
+                                   <li>Usuario</li>
                                    <li class="active">Lista</li>
                                </ul>
                                <!--breadcrumbs end -->
-                              <h1 class="h1">Compras</h1>
+                              <h1 class="h1">usuarios</h1>
                            </div>
 
 
@@ -21,7 +21,7 @@
 
                         <div class="col-md-offset-11">
                                 <a onclick="return abrir_modal('{% url 'comercial:nuevo_usuario' %}')" class="btn btn-primary">
-                                      <i class="fa fa-plus"></i>Compra
+                                      <i class="fa fa-plus"></i>Usuario
                                 </a>
                         </div>
 
@@ -41,24 +41,21 @@
                                      <thead>
                                    		<tr>
                                    			<td>#</td>
-                                   			<td>Proveedor</td>
-                                   			<td>Fecha</td>
-                                        <td>Total</td>
+                                   			<td>Usuario</td>
+                                   			<td>E-mail</td>
+                                        <td>Fecha de creación</td>
                                         <td>Acciones</td>
                                    		</tr>
                                    	</thead>
                                     <tbody>
                                       {% if object_list %}
-                                      {% for compra in object_list %}
+                                      {% for user in object_list %}
                                   		<tr>
-                                  			<td>{{ compra.id }}</td>
-                                        <td>{{ compra.proveedor.nombre }}</td>
-                                  			<td>{{ compra.fecha }}</td>
-                                        <td>{{ compra.total }}</td>
+                                  			<td>{{ user.id }}</td>
+                                        <td>{{ user.username }}</td>
+                                  			<td>{{ user.email }}</td>
+                                        <td>{{ user.date_joined }}</td>
                                         <td class="text-center">
-                                       <a onclick="return abrir_modal('{% url 'comercial:detalle_cliente' compra.pk %}')" class="btn btn-success btn-trans" > Ver </a>
-                                       <a onclick="return abrir_modal('{% url 'comercial:modificar_cliente' compra.pk %}')" class="btn btn-warning btn-trans">Editar</a>
-                                       <a onclick="return abrir_modal('{% url 'comercial:eliminar_cliente' compra.pk %}')" class="btn btn-danger btn-trans">Eliminar</a>
 
                                    </td>
                                   		</tr>

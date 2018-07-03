@@ -36,6 +36,18 @@ class userForm(UserCreationForm):
             'last_name':'Apellido',
             'email':'Correo',
         }
+        widgets = {
+
+            'username':forms.TextInput(attrs={'class':'form-control',
+                                             'placeholder':"Nombre de la marca"}),
+            'first_name':forms.TextInput(attrs={'class':'form-control',
+                                             'placeholder':"Nombre de la marca"}),
+            'last_name':forms.TextInput(attrs={'class':'form-control',
+                                             'placeholder':"Nombre de la marca"}),
+            'email':forms.TextInput(attrs={'class':'form-control',
+                                             'placeholder':"Nombre de la marca"}),
+
+        }
 
 #producto
 class productoForm(forms.ModelForm):

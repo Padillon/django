@@ -29,8 +29,11 @@ class nuevo_usuario(CreateView):
     models = User
     template_name = "usuario/registro.html"
     form_class = userForm
-    success_url = reverse_lazy('comercial:listado_clientes')
+    success_url = reverse_lazy('comercial:usuario')
 
+class ListadoUsuario(ListView):
+    model = User
+    template_name ="usuario/usuario.html"
 
 #inventario
 class ListadoInventario(ListView):
