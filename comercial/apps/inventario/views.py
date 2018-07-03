@@ -10,14 +10,11 @@ from django.contrib.auth import authenticate, login, logout
 import json
 from django.conf import settings
 from io import BytesIO
-<<<<<<< HEAD
 #alv veamos si no la riego
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
-=======
 from django.core import serializers
 
->>>>>>> master
 """from reportlab.pdfgen import canvas
 =======
 import reportlab
