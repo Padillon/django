@@ -47,8 +47,14 @@ urlpatterns = [
     path('nuevo_usuario/',login_required(nuevo_usuario.as_view()), name="nuevo_usuario"),
     path('salir',logout, name="salir", kwargs={'next_page': '/'}),
     #ventas
+<<<<<<< HEAD
     path('vender/',login_required(ventas_list.as_view()), name="venta_list"),
     path('nueva_venta/',login_required(venta), name="crear_venta"),
+=======
+    path('vender/',ventas_list.as_view(), name="venta_list"),
+    path('nueva_venta/',venta, name="crear_venta"),
+    path('venta/', venta, name="guardarVenta"),
+>>>>>>> master
 
     #compras
     path('compras/',login_required(ListadoCompra.as_view()), name="listado_compras"),

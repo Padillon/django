@@ -10,9 +10,14 @@ from django.contrib.auth import authenticate, login, logout
 import json
 from django.conf import settings
 from io import BytesIO
+<<<<<<< HEAD
 #alv veamos si no la riego
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
+=======
+from django.core import serializers
+
+>>>>>>> master
 """from reportlab.pdfgen import canvas
 =======
 import reportlab
@@ -184,20 +189,46 @@ def buscar_producto(request):
     if request.is_ajax:
         search=request.GET.get('start','')
         productosInfo=productos.objects.filter(nombre__icontains=search)
-        data_json=json.dumps(productosInfo)
-        print(productosInfo)
+
+        results=[]
+        for producto in productosInfo:
+            data={}
+            data['id'] = producto.id
+            data['codigo']= producto.codigo
+            data['precio']=producto.precio
+            data['label']=producto.nombre
+            data['value']=producto.nombre
+            data['stock']=producto.stock
+
+            results.append(data)
+
+        data_json=json.dumps(results)
+
     else:
         data_json='fail'
-        mimetype="application/json"
+    mimetype="application/json"
     return HttpResponse(data_json,mimetype)
 
 
 def venta(request):
-    if request.method == "POST":
-        form = VentaForm(request.POST)
-        if form.is_valid():
-            form.save()
-        return redirect("comercial:venta_list")
+
+    if request.is_ajax:
+        datos=request.GET.get('start','')
+        form = VentaForm()
+        detalle = datos.split("|")
+        n = int(len(detalle))
+        r = []
+        for i in range(n):
+            prodDetalle = detalle[i].split(",")
+            k=int(len(prodDetalle))
+            for y in range(k):
+                r.append(prodDetalle[y])
+                print(r)
+        #if form.is_valid():
+
+
+            #form.save()
+        #return redirect("comercial:venta_list")
     else:
         form = VentaForm()
     return render(request, 'venta/crearVenta.html',{'form':form})

@@ -20,7 +20,6 @@
     <link rel="stylesheet" href="{% static 'assets/css/animate.css' %}">
     <!-- Custom styles for this theme -->
     <link rel="stylesheet" href="{% static 'assets/css/main.css' %}">
-
     <!-- DataTables-->
    <link rel="stylesheet" href="{% static 'assets/plugins/dataTables/css/dataTables.css' %}">
     <!-- Fonts -->
@@ -189,56 +188,130 @@ function cerrar_modal2()
         return false;
 
 }
+
+function sumar(){
+
+    subtotal = 0;
+    $("#tbventas tbody tr").each(function(){
+        subtotal = subtotal + Number($(this).find("td:eq(5)").text());
+    });
+
+    $("#id_total").val(subtotal.toFixed(2));
+}
 </script>
 <script>
 
-    /*$("#producto").autocomplete({
-        minLength:3,
-        source: function(req, add){
-            var search=$("#producto").val();
-                $.ajax({
-                   url:'/buscar_producto/',
-                    async:false,
-                    dataType:'json',
-                    type:'GET',
-                    data:{ 'start': search,},
-                    success: function(data){
-                        var suggestions=[];
-
-                        $.each(data, function(index, objeto){
-                            suggestions.push(objeto.nombre);
-                        });
-
-                        add(suggestions);
-                        },
-                    error:function(err){
-                        alert("error");
-                    }
-                });
-            }
-        });*/
-
-
     $("#producto").autocomplete({
-        source: function(request, response){
+        minLength:2,
+        source: function(req, add){
             var search=$("#producto").val();
             $.ajax({
                 url:'/buscar_producto/',
+                async:false,
                 type: "GET",
                 dataType: "json",
-                data:{ 'start': search,},
+                data:{ 'start': search},
                 success: function(data){
-                    response(data);
-                }
+                            var suggestions=[];
+
+                            $.each(data, function(index, objeto){
+                                suggestions.push(objeto);
+                            });
+                            add(suggestions);
+                        },
+                        error:function(err){
+                            alert("error");
+                        }
             });
         }, //indica la informacion a mostrar al momento de comenzar a llenar el campo
-        minLength:2, //caracteres que activan el autocomplete
+         //caracteres que activan el autocomplete
         select: function(event, ui){
-            data = ui.item.id + "*" + ui.item.codigo + "*" + ui.item.label + "*" + ui.item.precio + "*" + ui.item.stock+ "*" + ui.item.precio;
-            $("#btn-agregar").val(data);
+            var data = ui.item.id + "*" + ui.item.codigo + "*" + ui.item.label + "*" + ui.item.precio + "*" + ui.item.stock;
+            $("#btn-agregar-producto").val(data);
         },
     });
 
+    $("#btn-agregar-producto").on("click", function(){
+        data = $(this).val();
+        if (data != " "){
+            infoProducto = data.split("*");
+            var codigo;
+            var stock;
+                if (infoProducto[1] == "undefined"){
+                    codigo = 0;
+                    stock = 0;
+                } else {
+                    id = infoProducto[0];
+                    codigo =  infoProducto[1];
+                    nombre = infoProducto[2];
+                    precio = infoProducto[3];
+                    stock = infoProducto[4];
+                }
+                //varx++;
+                //vary = 0;
+                html = "<tr class='read'>";
+                html += "<td><input type='hidden' class='idp' name='idProductos[]' value='"+infoProducto[0]+"'>"+codigo+"</td>"; //id y codigo
+                html += "<td><input type='hidden' name='nombreProductos[]' value='"+nombre+"'>"+nombre+"</td>"; //nombre
+                html += "<td><input type='hidden' class='precio' name='precios[]' value='"+precio+"'><p>"+precio+"</p></td>"; //precios
+                //vary++;
+                html += "<td class='stock'>"+stock+"</td>";//stock
+                html += "<td><input type='number' class='cantidad' placeholder='Ingrese numero entero' name='cantidades[]' value='1' class='cantidades'></td>"; //cantidades
+
+                html += "<td><input  type='hidden'class='subtotal' name='immporte[]' value='"+precio+"'><p>"+precio+"</p></td>"; //immportes
+                html += "<td><button type='button' class='btn btn-danger btn-remove-producto'><span class='fa fa-times' style='color: #fff'></span></button></td>";
+                html += "</tr>";
+                $("#tbventas tbody").append(html);
+                sumar();
+               $("#btn-agregar-producto").val(null);
+               $("#producto").val(null);
+        } else {
+            alert("seleccione un producto");
+        }
+
+    });
+
+    $(document).on("click", ".btn-remove-producto", function(){
+        $(this).closest("tr").remove();
+        sumar();
+    });
+    $(document).on("click","#btnsave",function(){
+      leer_tabla();
+    });
+    $(document).on("keyup", "#tbventas input.cantidades", function(){
+        cantidad = $(this).val();
+        precio = $(this).closest("tr").find("td:eq(2)").text();
+        importe = cantidad * precio;
+        totalImporte = parseFloat(importe).toFixed(2);
+        $(this).closest("tr").find("td:eq(5)").children("p").text(totalImporte);
+        $(this).closest("tr").find("td:eq(5)").children("input").val(totalImporte);
+        sumar();
+    });
+    function leer_tabla()
+    {
+      var datos = "";
+      $("#tbventas .read").each(function(){
+          var id = $(this).find('.idp').val();
+          var precio = $(this).find('.precio').val();
+          var cantidad = $(this).find('.cantidad').val();
+          var subtotal = $(this).find('.subtotal').val();
+          var stock = $(this).find('.stock').text();
+          datos+=id+","+precio+","+cantidad+","+subtotal+","+stock+"|";
+      });
+      $.ajax({
+          url:'/venta/',
+          async:false,
+          type: "GET",
+          dataType: "json",
+          data:{ 'start': datos}
+      });
+      //id = prodDetalle[0]
+              //precio = prodDetalle[1]
+              //cantidad = prodDetalle[2]
+              //subtotal = prodDetalle[3]
+              //stock = prodDetalle[4]
+              // /print(id, precio, cantidad, subtotal, stock)
+      //window.open('{% url 'comercial:guardarVenta' %}'+datos,'','');
+    }
 </script>
 
     	{% endblock %}
