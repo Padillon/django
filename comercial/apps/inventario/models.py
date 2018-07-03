@@ -12,8 +12,7 @@ class Cliente(models.Model):
 
     def __str__(self):
         return '{}'.format(self.nombre)
-    def stock(self):
-        return '{}'.format(self.stock)
+
 
 class estado(models.Model):
     id = models.AutoField(primary_key=True)

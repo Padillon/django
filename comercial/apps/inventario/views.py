@@ -20,15 +20,13 @@ from django.contrib.auth.forms import UserCreationForm
 from django.core import serializers
 
 
-"""from reportlab.pdfgen import canvas
-=======
+
 import reportlab
 from reportlab.pdfgen import canvas
->>>>>>> Stashed changes
 from reportlab.platypus import SimpleDocTemplate, Table, TableStyle
 from reportlab.lib.units import cm
 from reportlab.lib import colors
-from reportlab.lib.pagesizes import landscape, letter"""
+from reportlab.lib.pagesizes import landscape, letter
 #nuevo usuario
 class nuevo_usuario(CreateView):
     models = User
@@ -176,16 +174,7 @@ class ventas_list(ListView):
     model = Venta
     template_name = 'venta/venta_list.html'
 
-def CrearVenta(request):
-    ventas = venta.objects.all()
-    d_ventas = detalle_venta.objects.all()
-    Clientes = Cliente.objects.all()
 
-    return render(
-        request,
-        'venta/crearVenta.html',
-        context={'venta':ventas,'d_venta':d_ventas,'client':Clientes},
-        )
 
 def buscar_producto(request):
     if request.is_ajax:
@@ -211,6 +200,26 @@ def buscar_producto(request):
     mimetype="application/json"
     return HttpResponse(data_json,mimetype)
 
+def buscar_cliente(request):
+    if request.is_ajax:
+        search=request.GET.get('start','')
+        clienteInfo=Cliente.objects.filter(nombre__icontains=search)
+
+        results=[]
+        for cliente in clienteInfo:
+            data={}
+            data['id'] = cliente.id
+            data['label']= cliente.nombre
+            results.append(data)
+
+        data_json=json.dumps(results)
+        print(results)
+
+    else:
+        data_json='fail'
+    mimetype="application/json"
+    return HttpResponse(data_json,mimetype)
+
 
 def venta(request):
     #form = VentaForm()
@@ -218,7 +227,6 @@ def venta(request):
     if request.is_ajax:
         datos=request.GET.get('start', None)
         info = request.GET.get('info', None)
-
         if (datos != None):
 
             detalle = []
@@ -231,10 +239,10 @@ def venta(request):
             s = int(len(infoSplit))
             for i in range(s):
                 infoVenta[i] = infoSplit[i]
-            print(infoVenta.items())
 
             sdate = str(infoVenta.get(0))
-            cliente = int(infoVenta.get(1))
+            comp = Cliente.objects.get(nombre=infoVenta.get(1))
+            cliente = int(comp.id)
             total = float(infoVenta.get(2))
             print(sdate, cliente, total)
 
@@ -247,7 +255,7 @@ def venta(request):
             n = int(len(detalle))
             for i in range(n):
                 detProd = detalle[i].split(',')
-                
+
                 for k in range(int(len(detProd))):
                     diccionario[k] = detProd[k]
 
@@ -259,6 +267,13 @@ def venta(request):
                     stock = int(diccionario.get(4))
                     insertDetalle = detalle_venta(venta= latestID, producto_id=idProd, cantidad=cantidad, subtotal=subtotal)
                     insertDetalle.save()
+
+                    stProd = productos.objects.get(pk=idProd)
+                    pro = int(stProd.stock)-cantidad
+                    stProd.stock=pro
+                    stProd.save()
+
+
             red = 1
         else:
             print("error")
@@ -329,7 +344,7 @@ def login_page(request):
 
 class ReporteProductosPDF(View):
 
-    """def cabecera(self,pdf):
+    def cabecera(self,pdf):
             #Utilizamos el archivo logo_django.png que está guardado en la carpeta media/imagenes
             archivo_imagen = settings.MEDIA_ROOT+'/imagenes/logo.jpg'
             #Definimos el tamaño de la imagen a cargar y las coordenadas correspondientes
@@ -337,7 +352,7 @@ class ReporteProductosPDF(View):
             #Establecemos el tamaño de letra en 16 y el tipo de letra Helvetica
             pdf.setFont("Helvetica", 16)
             #Dibujamos una cadena en la ubicación X,Y especificada
-            pdf.drawString(150, 570, u"Comercial Jovany S.A.")
+            pdf.drawString(150, 570, u"Comercial Jovanny S.A.")
             pdf.setFont("Helvetica", 14)
             pdf.drawString(151, 555, u"Vengase aquí primero")
             pdf.setFont("Helvetica", 12)
@@ -385,11 +400,11 @@ class ReporteProductosPDF(View):
         pdf = buffer.getvalue()
         buffer.close()
         response.write(pdf)
-        return response"""
+        return response
 
 class ReporteProductosBajosPDF(View):
 
-    """def cabecera(self,pdf):
+    def cabecera(self,pdf):
             #Utilizamos el archivo logo_django.png que está guardado en la carpeta media/imagenes
             archivo_imagen = settings.MEDIA_ROOT+'/imagenes/logo.jpg'
             #Definimos el tamaño de la imagen a cargar y las coordenadas correspondientes
@@ -397,7 +412,7 @@ class ReporteProductosBajosPDF(View):
             #Establecemos el tamaño de letra en 16 y el tipo de letra Helvetica
             pdf.setFont("Helvetica", 16)
             #Dibujamos una cadena en la ubicación X,Y especificada
-            pdf.drawString(150, 570, u"Comercial Jovany S.A.")
+            pdf.drawString(150, 570, u"Comercial Jovanny S.A.")
             pdf.setFont("Helvetica", 14)
             pdf.drawString(151, 555, u"Vengase aquí primero")
             pdf.setFont("Helvetica", 12)
@@ -444,4 +459,4 @@ class ReporteProductosBajosPDF(View):
         pdf = buffer.getvalue()
         buffer.close()
         response.write(pdf)
-        return response"""
+        return response
