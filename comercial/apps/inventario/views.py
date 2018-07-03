@@ -38,6 +38,7 @@ class ListadoUsuario(ListView):
     model = User
     template_name ="usuario/usuario.html"
 
+
 #inventario
 class ListadoInventario(ListView):
     model = productos
@@ -318,6 +319,7 @@ def CrearCompra(request):
             compra = Compra()
             compra.proveedor = obj.proveedor
             compra.total = total_compra
+            compra.fecha = "2018-07-03"
             compra.save()
         return redirect("comercial:listado_compras")
     else:

@@ -39,17 +39,17 @@
                      <thead>
                    		<tr>
                    			<td>#</td>
-                   			<td>Codigo</td>
                    			<td>Fecha</td>
-                        <td>Cliente</td>
-                   			<td>Total</td>
+                   			<td>cliente</td>
+                        <td>total</td>
+                   			<td>accion</td>
                    		</tr>
                    	</thead>
                     <tbody>
                   		{% if object_list %}
                   		{% for venta in object_list %}
                   		<tr>
-                  			<td>{{ venta.codigo }}</td>
+                  			<td>{{ venta.id }}</td>
                   			<td>{{ venta.fecha }}</td>
                   			<td>{{ venta.cliente }}</td>
                         <td>{{ venta.total }}</td>
