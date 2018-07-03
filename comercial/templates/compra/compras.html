@@ -43,6 +43,7 @@
                    			<td>#</td>
                    			<td>Proveedor</td>
                    			<td>Fecha</td>
+                        <td>Total</td>
                         <td>Acciones</td>
                    		</tr>
                    	</thead>
@@ -53,10 +54,11 @@
                   			<td>{{ compra.id }}</td>
                         <td>{{ compra.proveedor.nombre }}</td>
                   			<td>{{ compra.fecha }}</td>
+                        <td>{{ compra.total }}</td>
                         <td class="text-center">
-                       <a onclick="return abrir_modal('{% url 'comercial:detalle_cliente' Cliente.pk %}')" class="btn btn-success btn-trans" > Ver </a>
-                       <a onclick="return abrir_modal('{% url 'comercial:modificar_cliente' Cliente.pk %}')" class="btn btn-warning btn-trans">Editar</a>
-                       <a onclick="return abrir_modal('{% url 'comercial:eliminar_cliente' Cliente.pk %}')" class="btn btn-danger btn-trans">Eliminar</a>
+                       <a onclick="return abrir_modal('{% url 'comercial:detalle_cliente' compra.pk %}')" class="btn btn-success btn-trans" > Ver </a>
+                       <a onclick="return abrir_modal('{% url 'comercial:modificar_cliente' compra.pk %}')" class="btn btn-warning btn-trans">Editar</a>
+                       <a onclick="return abrir_modal('{% url 'comercial:eliminar_cliente' compra.pk %}')" class="btn btn-danger btn-trans">Eliminar</a>
 
                    </td>
                   		</tr>

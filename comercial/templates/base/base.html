@@ -70,7 +70,7 @@
                                 <a href="#"><i class="fa fa-envelope"></i> Inbox <span class="badge badge-danager" id="user-inbox">5</span></a>
                             </li>
                             <li>
-                                <a href="{% url 'login'%}"><i class="fa fa-power-off"></i> Logout</a>
+                                <a href="{% url 'comercial:salir' %}"><i class="fa fa-power-off"></i> Logout</a>
                             </li>
                         </ul>
                     </li>
@@ -100,6 +100,7 @@
             <ul>
               <li><a href="{% url 'comercial:listado_clientes' %}">Cliente</a></li>
               <li><a href="{% url 'comercial:venta_list' %}">Ventas</a></li>
+              <li><a href="{% url 'comercial:nuevo_usuario' %}">Nuevo Usuario</a></li>
             </ul>
         </li>
         <li class="sub-menu">

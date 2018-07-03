@@ -6,11 +6,18 @@ from apps.inventario.forms import *
 from apps.inventario.models import *
 from django.template import RequestContext
 from django.shortcuts import render_to_response
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 import json
 from django.conf import settings
 from io import BytesIO
+<<<<<<< HEAD
 import datetime
+=======
+#alv veamos si no la riego
+from django.contrib.auth.models import User
+from django.contrib.auth.forms import UserCreationForm
+from django.core import serializers
+>>>>>>> master
 
 """from reportlab.pdfgen import canvas
 =======
@@ -21,6 +28,13 @@ from reportlab.platypus import SimpleDocTemplate, Table, TableStyle
 from reportlab.lib.units import cm
 from reportlab.lib import colors
 from reportlab.lib.pagesizes import landscape, letter"""
+#nuevo usuario
+class nuevo_usuario(CreateView):
+    models = User
+    template_name = "usuario/registro.html"
+    form_class = userForm
+    success_url = reverse_lazy('comercial:listado_clientes')
+
 
 #inventario
 class ListadoInventario(ListView):
@@ -267,13 +281,27 @@ def CrearCompra(request):
         form = DetalleCompraForm(request.POST)
 
         if form.is_valid():
-            form.save()
+            #guardamos el registro
+            obj=form.save()
+            #actualizamos el total
+            precio_compra = float(request.POST['precio_compra'])
+            stock_mas = float (request.POST['cantidad'])
+            comp = DetalleCompra.objects.get(pk=obj.id)
+            total_compra = precio_compra * stock_mas
+            comp.total = total_compra
+            comp.save()
+            #actualizamos el stock
+            stock_mas = int(stock_mas)
             prod = productos.objects.get(pk=request.POST['producto'])
             s = int(prod.stock)
-            stock_mas = int (request.POST['cantidad'])
             total = s+stock_mas
             prod.stock = total
             prod.save()
+            #creamos el registro de compra
+            compra = Compra()
+            compra.proveedor = obj.proveedor
+            compra.total = total_compra
+            compra.save()
         return redirect("comercial:listado_compras")
     else:
         form = DetalleCompraForm()
