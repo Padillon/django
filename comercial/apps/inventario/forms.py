@@ -3,6 +3,8 @@ from apps.inventario.models import *
 from django.contrib.admin.widgets import AdminDateWidget
 from django.forms.fields import DateField
 from django.forms.models import inlineformset_factory
+from django.contrib.auth.models import User
+from django.contrib.auth.forms import UserCreationForm
 #productos
 class ClienteForm(forms.ModelForm):
 
@@ -16,8 +18,26 @@ class ClienteForm(forms.ModelForm):
             if field != 'estado':
                 self.fields[field].widget.attrs.update({
                     'class': 'form-control'
-                })
 
+                })
+#usuario
+class userForm(UserCreationForm):
+    class Meta:
+        model = User
+        fields = [
+            'username',
+            'first_name',
+            'last_name',
+            'email',
+        ]
+        labels = {
+            'username':'Nombre de usuario',
+            'first_name':'Nombre',
+            'last_name':'Apellido',
+            'email':'Correo',
+        }
+
+#producto
 class productoForm(forms.ModelForm):
     class Meta:
         model = productos

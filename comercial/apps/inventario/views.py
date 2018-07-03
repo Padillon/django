@@ -6,11 +6,13 @@ from apps.inventario.forms import *
 from apps.inventario.models import *
 from django.template import RequestContext
 from django.shortcuts import render_to_response
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 import json
 from django.conf import settings
 from io import BytesIO
-
+#alv veamos si no la riego
+from django.contrib.auth.models import User
+from django.contrib.auth.forms import UserCreationForm
 """from reportlab.pdfgen import canvas
 =======
 import reportlab
@@ -20,6 +22,13 @@ from reportlab.platypus import SimpleDocTemplate, Table, TableStyle
 from reportlab.lib.units import cm
 from reportlab.lib import colors
 from reportlab.lib.pagesizes import landscape, letter"""
+#nuevo usuario
+class nuevo_usuario(CreateView):
+    models = User
+    template_name = "usuario/registro.html"
+    form_class = userForm
+    success_url = reverse_lazy('comercial:listado_clientes')
+
 
 #inventario
 class ListadoInventario(ListView):
@@ -225,7 +234,7 @@ def CrearCompra(request):
             compra = Compra()
             compra.proveedor = obj.proveedor
             compra.total = total_compra
-            compra.save()    
+            compra.save()
         return redirect("comercial:listado_compras")
     else:
         form = DetalleCompraForm()

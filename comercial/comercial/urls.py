@@ -33,6 +33,7 @@ urlpatterns = [
     url(r'^$', login, {'template_name':'index.html'}, name='login'),
     url(r'^buscar_producto/$',views.buscar_producto),
     path('compras/', include('apps.inventario.urls', namespace='inventario_list')),
+    path('usuario/', include('apps.inventario.urls', namespace='nuevo_usuario')),
 
 
 ]
