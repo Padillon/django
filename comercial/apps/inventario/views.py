@@ -198,16 +198,21 @@ def buscar_producto(request):
 
 
 def venta(request):
-    if request.method == "POST":
-        form = VentaForm(request.POST or None)
 
-        if form.is_valid():
-            #datos = form.cleaned_data
-            cliente = form.cleaned_data["cliente"]
-            nombreProductos = request.POST.get('nombreProductos', None)
-            print(cliente);
-            print(nombreProductos)
-            print(request.POST)
+    if request.is_ajax:
+        datos=request.GET.get('start','')
+        form = VentaForm()
+        detalle = datos.split("|")
+        n = int(len(detalle))
+        r = []
+        for i in range(n):
+            prodDetalle = detalle[i].split(",")
+            k=int(len(prodDetalle))
+            for y in range(k):
+                r.append(prodDetalle[y])
+                print(r)
+        #if form.is_valid():
+
 
             #form.save()
         #return redirect("comercial:venta_list")
