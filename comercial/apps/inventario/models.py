@@ -12,8 +12,7 @@ class Cliente(models.Model):
 
     def __str__(self):
         return '{}'.format(self.nombre)
-    def stock(self):
-        return '{}'.format(self.stock)
+
 
 class estado(models.Model):
     id = models.AutoField(primary_key=True)
@@ -66,15 +65,13 @@ class productos(models.Model):
     def __str__(self):
         return '{}'.format(self.nombre)
 
-class venta(models.Model):
-    id = models.AutoField(primary_key=True)
-    fecha = models.DateField()
+class Venta(models.Model):
+    fecha = models.CharField(max_length=100)
     cliente = models.ForeignKey(Cliente, null=True, blank=True, on_delete=models.CASCADE)
     total = models.DecimalField(max_digits=5,decimal_places=2, null=True)
 
 class detalle_venta(models.Model):
-    id = models.AutoField(primary_key=True)
-    venta = models.ForeignKey(venta, null=True, on_delete=models.SET_NULL)
+    venta = models.ForeignKey(Venta, null=True, on_delete=models.SET_NULL)
     producto = models.ForeignKey(productos, null=True, on_delete=models.SET_NULL)
     cantidad = models.IntegerField(max_length=10000)
     subtotal = models.DecimalField(max_digits=5,decimal_places=2, null=True)

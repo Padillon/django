@@ -7,7 +7,7 @@
     <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>{% block title %}Comercial Jeovany {% endblock %}</title>
+    <title>{% block title %}Comercial Jeovanny {% endblock %}</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <!-- Favicon -->
@@ -196,7 +196,7 @@ function sumar(){
         subtotal = subtotal + Number($(this).find("td:eq(5)").text());
     });
 
-    $("#id_total").val(subtotal.toFixed(2));
+    $("#totalInput").val(subtotal.toFixed(2));
 }
 </script>
 <script>
@@ -255,7 +255,7 @@ function sumar(){
                 html += "<td><input type='hidden' class='precio' name='precios[]' value='"+precio+"'><p>"+precio+"</p></td>"; //precios
                 //vary++;
                 html += "<td class='stock'>"+stock+"</td>";//stock
-                html += "<td><input type='number' class='cantidad' placeholder='Ingrese numero entero' name='cantidades[]' value='1' class='cantidades'></td>"; //cantidades
+                html += "<td><input type='number'  class='cantidades' placeholder='Ingrese numero entero' name='cantidades[]' value='1'></td>"; //cantidades
 
                 html += "<td><input  type='hidden'class='subtotal' name='immporte[]' value='"+precio+"'><p>"+precio+"</p></td>"; //immportes
                 html += "<td><button type='button' class='btn btn-danger btn-remove-producto'><span class='fa fa-times' style='color: #fff'></span></button></td>";
@@ -286,13 +286,48 @@ function sumar(){
         $(this).closest("tr").find("td:eq(5)").children("input").val(totalImporte);
         sumar();
     });
+
+    $("#clienteInput").autocomplete({
+      minLength:2,
+      source: function(req, add){
+          var search=$("#clienteInput").val();
+          $.ajax({
+              url:'/buscar_cliente/',
+              async:false,
+              type: "GET",
+              dataType: "json",
+              data:{ 'start': search},
+              success: function(data){
+                          var suggestions=[];
+                          $.each(data, function(index, objeto){
+                              suggestions.push(objeto);
+                          });
+                          add(suggestions);
+                      },
+                      error:function(err){
+                          alert("error");
+                      }
+          });
+      }, //indica la informacion a mostrar al momento de comenzar a llenar el campo
+       //caracteres que activan el autocomplete
+       select: function(event, ui){
+           var data = ui.item.id ;
+           $("#clienteInput").val(data);
+       },
+    });
+
     function leer_tabla()
     {
-      var datos = "";
+      var info = "";
+      var datos = '';
+      info += $("#fechaInput").val();
+      info +="*"+$("#clienteInput").val();
+      info +="*"+$("#totalInput").val();
+
       $("#tbventas .read").each(function(){
           var id = $(this).find('.idp').val();
           var precio = $(this).find('.precio').val();
-          var cantidad = $(this).find('.cantidad').val();
+          var cantidad = $(this).find('.cantidades').val();
           var subtotal = $(this).find('.subtotal').val();
           var stock = $(this).find('.stock').text();
           datos+=id+","+precio+","+cantidad+","+subtotal+","+stock+"|";
@@ -302,15 +337,8 @@ function sumar(){
           async:false,
           type: "GET",
           dataType: "json",
-          data:{ 'start': datos}
+          data:{ 'start': datos, 'info': info}
       });
-      //id = prodDetalle[0]
-              //precio = prodDetalle[1]
-              //cantidad = prodDetalle[2]
-              //subtotal = prodDetalle[3]
-              //stock = prodDetalle[4]
-              // /print(id, precio, cantidad, subtotal, stock)
-      //window.open('{% url 'comercial:guardarVenta' %}'+datos,'','');
     }
 </script>
 
