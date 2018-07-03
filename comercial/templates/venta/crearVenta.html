@@ -40,11 +40,18 @@
                         <div class="col-md-12">
 
                         <form action="{% url 'comercial:guardarVenta' %}" method="POST" class="form-horizontal">
+                            <div class="col-md-6">
                             <div class="form-group">
                                 {% csrf_token %}
-                                 {{ form.as_p }}
+                                 <label for="">Fecha:</label>
+                                    <input type="date" class="form-control" name="fechaInput" id="fechaInput" required>
                             </div><!-- /input-group -->
-                            </div>
+                        </div>
+                            <div class="col-md-6">
+                                <label for="">Cliente:</label>
+                                <input type="text" class="form-control" id="clienteInput" name="clienteInput">
+                                </div>
+                           
 
                             </div>
                             <div class="form-group">
@@ -76,7 +83,12 @@
                                 </tbody>
                             </table>
 
-
+                            <div class="col-md-3">
+                                    <div class="input-group">
+                                        <span class="input-group-addon">Total:</span>
+                                        <input type="text" class="form-control" name="totalInput" id="totalInput" readonly="readonly">
+                                    </div>
+                                </div>
 
                             <div class="form-group">
                                 <div class="col-md-12">

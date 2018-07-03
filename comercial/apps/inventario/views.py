@@ -10,7 +10,7 @@ from django.contrib.auth import authenticate, login
 import json
 from django.conf import settings
 from io import BytesIO
-from django.core import serializers
+import datetime
 
 """from reportlab.pdfgen import canvas
 =======
@@ -198,27 +198,62 @@ def buscar_producto(request):
 
 
 def venta(request):
+    #form = VentaForm()
 
     if request.is_ajax:
-        datos=request.GET.get('start','')
-        form = VentaForm()
-        detalle = datos.split("|")
-        n = int(len(detalle))
-        r = []
-        for i in range(n):
-            prodDetalle = detalle[i].split(",")
-            k=int(len(prodDetalle))
-            for y in range(k):
-                r.append(prodDetalle[y])
-                print(r)
-        #if form.is_valid():
+        datos=request.GET.get('start', None)
+        info = request.GET.get('info', None)
 
+        if (datos != None):
 
-            #form.save()
-        #return redirect("comercial:venta_list")
-    else:
-        form = VentaForm()
-    return render(request, 'venta/crearVenta.html',{'form':form})
+            detalle = []
+            detProd = []
+            infoSplit = []
+            diccionario= dict()
+            infoVenta = dict()
+
+            infoSplit = info.split("*")
+            s = int(len(infoSplit))
+            for i in range(s):
+                infoVenta[i] = infoSplit[i]
+            print(infoVenta.items())
+
+            sdate = str(infoVenta.get(0))
+            cliente = int(infoVenta.get(1))
+            total = float(infoVenta.get(2))
+            #print(fecha)
+
+            insertVenta = venta(fecha=sdate, cliente_id=cliente, total=total)
+            insertVenta.save()
+            fkVenta = venta.objects.latest('id')
+            print(fkVenta)
+
+            detalle = datos.split("|")
+            n = int(len(detalle))
+
+            for i in range(n):
+                detProd = detalle[i].split(',')
+                
+                for k in range(int(len(detProd))):
+                    diccionario[k] = detProd[k]
+
+                idProd = diccionario.get(0)
+                precio = diccionario.get(1)
+                cantidad = diccionario.get(2)
+                subtotal = diccionario.get(3)
+                stock = diccionario.get(4)
+
+                #insert = detalle_venta(id, precio, cantidad, subtotal, stock)
+                
+
+            #if form.is_valid():
+
+                #form.save()
+            #return redirect("comercial:venta_list")
+        else:
+            print("error")
+            #form = VentaForm()
+    return render(request,'venta/crearVenta.html')
 
 #compra
 class ListadoCompra(ListView):

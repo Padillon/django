@@ -67,13 +67,11 @@ class productos(models.Model):
         return '{}'.format(self.nombre)
 
 class venta(models.Model):
-    id = models.AutoField(primary_key=True)
-    fecha = models.DateField()
+    fecha = models.IntegerField(max_length=10000)
     cliente = models.ForeignKey(Cliente, null=True, blank=True, on_delete=models.CASCADE)
     total = models.DecimalField(max_digits=5,decimal_places=2, null=True)
 
 class detalle_venta(models.Model):
-    id = models.AutoField(primary_key=True)
     venta = models.ForeignKey(venta, null=True, on_delete=models.SET_NULL)
     producto = models.ForeignKey(productos, null=True, on_delete=models.SET_NULL)
     cantidad = models.IntegerField(max_length=10000)

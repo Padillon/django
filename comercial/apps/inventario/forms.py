@@ -129,29 +129,7 @@ class categoriaForm(forms.ModelForm):
         }
 
 #venta
-class VentaForm(forms.ModelForm):
-    class Meta:
-        model = venta
-        fields = [
-            'id',
-            'fecha',
-            'cliente',
-            'total'
-        ]
 
-        labels = {
-            'id':'Factura #',
-            'fecha':'Fecha',
-            'cliente':'Cliente',
-            'total':'Total'
-        }
-
-        widgets = {
-            'id': forms.TextInput(attrs={'class':'form-control', 'type':'hidden'}),
-            'fecha': forms.TextInput(attrs={'class':'form-control', 'placeholder':"fecha", 'type':"date"}),
-            'cliente': forms.Select(attrs={'class':'form-control', 'placeholder':"cliente"}),
-            'total': forms.TextInput(attrs={'class':'form-control', 'readonly':'readonly', 'placeholder':"total"})
-        }
 
 
 class CompraForm(forms.ModelForm):
